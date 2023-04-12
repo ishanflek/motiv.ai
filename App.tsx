@@ -155,7 +155,18 @@ function App(): JSX.Element {
       return subscriber; // unsubscribe on unmount
     }, []);
   
-    if (initializing) return null;
+    function SplashScreen() {
+      return (
+        <View>
+          <Image source={require('./assets/243_2380.png')} />
+          <Text>Loading...</Text>
+        </View>
+      );
+    }
+
+    if (initializing) {
+      return <SplashScreen />;
+    }
   
     if (!user) {
       return (
