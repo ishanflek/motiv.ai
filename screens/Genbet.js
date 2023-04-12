@@ -100,7 +100,7 @@ useEffect(() => {
                 ]}
                 numColumns = {2}
                 renderItem={({ item }) => (
-                      <TouchableOpacity onPress={() => navigation.navigate('')} style={[styles.button]}>
+                      <TouchableOpacity onPress={() => navigation.navigate('edit')} style={[styles.button]}>
                         <Image style={styles.image} source={{ uri: item.uri }} resizeMode='cover'/>
                       </TouchableOpacity>
                     )}/>
