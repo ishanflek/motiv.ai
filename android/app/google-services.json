@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "620209701399",
+    "project_id": "motivetai",
+    "storage_bucket": "motivetai.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:620209701399:android:7d08d508092d534b7f9252",
+        "android_client_info": {
+          "package_name": "com.motivai"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "620209701399-hahn87c38afccjt5q2h0avb5vq68374e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAh73_lTintH0cGjbdkP2BtphC7qg-ysa4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "620209701399-hahn87c38afccjt5q2h0avb5vq68374e.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "620209701399-5jqsf7usga4p6tcipdoi1c6r7j5eo7hg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.fbd"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
