@@ -101,7 +101,7 @@ function Editor({navigation})  {
 
   return (
     <View style={styles.container}>
-      <Image source={require('./img.jpg')} style={styles.image} />
+      <Image source={require('../assets/238_6410.jpg')} style={styles.image} />
       {editing ? (
           <View style={styles.inputContainer}>
             <TextInput
