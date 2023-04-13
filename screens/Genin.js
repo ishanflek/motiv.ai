@@ -11,36 +11,35 @@ function Genin({navigation}) {
   const [style, setStyle] = useState('');
   const[text,setText] = useState('');
 
-
-  const handlefreq = async() =>  {
-    console.log(style)
-    let pr = text + " in " +style;
-    console.log(pr)
+  const handlefreq = async () => {
+    let pr = text + ' in ' + style;
     let data = JSON.stringify({
-      "version": "db21e45d3f7023abc2a46ee38a23973f6dce16bb082a930b0c49861f96d1e5bf",
-      "input": {
-        "prompt": pr,
-        "num_outputs": 4
-      }
+      version:
+        'db21e45d3f7023abc2a46ee38a23973f6dce16bb082a930b0c49861f96d1e5bf',
+      input: {
+        prompt: pr,
+        num_outputs: 4,
+      },
     });
-    
+
     let config = {
       method: 'post',
       maxBodyLength: Infinity,
       url: 'https://api.replicate.com/v1/predictions',
       headers: { 
-        'Authorization': 'Token 04890391d41e038f86c2e5f2e112e1e89b9efdcf', 
-        'Content-Type': 'application/json'
+        Authorization: 'Token 04890391d41e038f86c2e5f2e112e1e89b9efdcf',
+        'Content-Type': 'application/json',
       },
-      data : data
+      data: data,
     };
-    
-    const response = await axios.request(config)
-    console.log(response.data.urls.get)
-    console.log(pr)
-    navigation.navigate('genbet', {getreq: response.data.urls.get,
-                                  tes: pr});
-  }
+
+    // const response = await axios.request(config);
+    navigation.navigate('genbet', {
+      // getreq: response.data.urls.get,
+      getreq: {},
+      tes: pr,
+    });
+  };
 
   const handleButtonPress = (id) => {
     setSelectedButton(id);

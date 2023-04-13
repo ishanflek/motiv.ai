@@ -1,7 +1,8 @@
-import React, { useState, useRef } from 'react';
+import React, {useState, useRef} from 'react';
 import {
   View,
   Image,
+  ImageBackground,
   Animated,
   Text,
   StyleSheet,
@@ -10,13 +11,13 @@ import {
   TouchableOpacity,
   PermissionsAndroid,
   Alert,
-  Platform
+  Platform,
 } from 'react-native';
 
 import ViewShot, {captureRef} from 'react-native-view-shot';
-import CameraRoll from '@react-native-community/cameraroll';
+// import CameraRoll from '@react-native-community/cameraroll';
 
-function Editor({navigation})  {
+function Editor({navigation, route}) {
   const [text, setText] = useState('');
   const [editing, setEditing] = useState(true);
   const pan = useRef(new Animated.ValueXY()).current;
@@ -55,9 +56,9 @@ function Editor({navigation})  {
       const uri = await captureRef(viewRef, {
         format: 'png',
         quality: 0.8,
-        result: 'base64'
+        result: 'base64',
       });
-      console.log(uri)
+      console.log(uri);
       if (Platform.OS === 'android') {
         const granted = await getPermissionAndroid();
         if (!granted) {
@@ -66,16 +67,16 @@ function Editor({navigation})  {
       }
 
       // cameraroll saves image
-      console.log(uri)
-      const image = CameraRoll.save(uri);
-      if (image) {
-        Alert.alert(
-          '',
-          'Image saved successfully.',
-          [{text: 'OK', onPress: () => {}}],
-          {cancelable: false},
-        );
-      }
+      console.log(uri);
+      // const image = CameraRoll.save(uri);
+      // if (image) {
+      //   Alert.alert(
+      //     '',
+      //     'Image saved successfully.',
+      //     [{text: 'OK', onPress: () => {}}],
+      //     {cancelable: false},
+      //   );
+      // }
     } catch (error) {
       console.log('error', error);
     }
@@ -84,11 +85,13 @@ function Editor({navigation})  {
   const panResponder = useRef(
     PanResponder.create({
       onMoveShouldSetPanResponder: () => true,
-      onPanResponderMove: Animated.event([null, { dx: pan.x, dy: pan.y }], { useNativeDriver: false }),
+      onPanResponderMove: Animated.event([null, {dx: pan.x, dy: pan.y}], {
+        useNativeDriver: false,
+      }),
       onPanResponderRelease: () => {
         pan.extractOffset();
       },
-    })
+    }),
   ).current;
 
   const handleInputSubmit = () => {
@@ -101,8 +104,31 @@ function Editor({navigation})  {
 
   return (
     <View style={styles.container}>
-      <Image source={require('../assets/238_6410.jpg')} style={styles.image} />
-      {editing ? (
+      {/* <ViewShot
+        ref={viewRef}
+        options={{
+          fileName: 'Your-File-Name',
+          format: 'jpg',
+          quality: 0.9,
+          result: 'base64',
+        }}> */}
+      <ImageBackground source={{uri: route.params.image_url}}>
+        <View style={{width: '100%', height: '90%'}}>
+          <Animated.Text
+            style={[
+              styles.draggableText,
+              {
+                transform: [{translateX: pan.x}, {translateY: pan.y}],
+              },
+            ]}
+            {...panResponder.panHandlers}>
+            {text}
+          </Animated.Text>
+        </View>
+      </ImageBackground>
+      {/* </ViewShot> */}
+      <View style={{height: '10%', backgroundColor: '#000000', padding: 5}}>
+        {editing ? (
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.input}
@@ -112,30 +138,23 @@ function Editor({navigation})  {
               onSubmitEditing={handleInputSubmit}
             />
           </View>
-      ) : (
-          <View style={styles.draggableContainer}>
-            <ViewShot ref ={viewRef} options={{ fileName: "Your-File-Name", format: "jpg", quality: 0.9, result: 'base64'}}>
-            <Animated.Text
-            style={[
-              styles.draggableText,
-                {
-                  transform: [{ translateX: pan.x }, { translateY: pan.y }],
-                },
-              ]}
-            {...panResponder.panHandlers}>
-            {text}
-            </Animated.Text>
-            </ViewShot>
-            <View style={styles.editButtonContainer}>
-              <TouchableOpacity style={styles.editButton} onPress={handleEdit}>
-                <Text style={styles.editButtonText}>Edit</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.saveButton} onPress={downloadImage}>
-                <Text style={styles.editButtonText}>Save</Text>
-              </TouchableOpacity>
-            </View>
+        ) : (
+          <View className="flex flex-row justify-around items-center">
+            <TouchableOpacity className="bg-[#141519] rounded-lg w-24 flex flex-col items-center p-2" onPress={handleEdit}>
+              <Image source={require('../assets/edit.png')} />
+              <Text style={{color: 'white'}}>Edit</Text>
+            </TouchableOpacity>
+            <TouchableOpacity className="bg-[#141519] rounded-lg w-24 flex flex-col items-center p-2" onPress={downloadImage}>
+              <Image source={require('../assets/save.png')} />
+              <Text style={{color: 'white'}}>Save</Text>
+            </TouchableOpacity>
+            <TouchableOpacity className="bg-[#141519] rounded-lg w-24 flex flex-col items-center p-2" onPress={downloadImage}>
+              <Image source={require('../assets/share.png')} />
+              <Text style={{color: 'white'}}>Share</Text>
+            </TouchableOpacity>
           </View>
-      )}
+        )}
+      </View>
     </View>
   );
 }
@@ -143,20 +162,6 @@ function Editor({navigation})  {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  image: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
-  },
-  draggableContainer: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   draggableBox: {
     backgroundColor: 'rgba(255, 255, 255, 0.7)',
@@ -167,32 +172,25 @@ const styles = StyleSheet.create({
     borderColor: 'white',
     elevation: 3,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
   },
   draggableText: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: 'red',
+    color: 'black',
   },
   inputContainer: {
-    position: 'absolute',
-    bottom: 20,
-    left: 20,
-    right: 20,
-    padding: 10,
     borderRadius: 10,
     borderWidth: 2,
     borderColor: 'white',
     elevation: 3,
-    height: 50,
   },
   input: {
     fontSize: 18,
     color: 'white',
     width: '100%',
-    height: 30,
     paddingHorizontal: 10,
   },
   editButtonContainer: {
@@ -205,7 +203,7 @@ const styles = StyleSheet.create({
   editButton: {
     padding: 10,
     elevation: 3,
-    opacity: 0.8
+    opacity: 0.8,
   },
   editButtonText: {
     color: 'red',
@@ -215,8 +213,8 @@ const styles = StyleSheet.create({
   saveButton: {
     padding: 10,
     elevation: 3,
-    opacity: 0.8
+    opacity: 0.8,
   },
-})
+});
 
 export default Editor;

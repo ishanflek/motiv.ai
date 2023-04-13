@@ -7,19 +7,26 @@ import axios from "axios"
 import { useEffect, useState } from 'react';
 
 function Genbet({navigation, route}) {
-  const fs = Dimensions.get("window").fontScale;
-  req = route.params.getreq
-  ttt = route.params.tes
-  console.log("Start")
-  console.log(ttt)
-  const [img1,setImg1] = useState('');
-  const [img2,setImg2] = useState('');
-  const [img3,setImg3] = useState('');
-  const [img4,setImg4] = useState('');
-  const [responseReceived, setResponseReceived] = useState(false);
+  const fs = Dimensions.get('window').fontScale;
+  let req = route.params.getreq;
+  let ttt = route.params.tes;
 
-  const handlesreq = async() =>  {
+  console.log('Start');
+  const [img1, setImg1] = useState(
+    'https://images.unsplash.com/photo-1592743263126-bb241ee76ac7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8YmVhdXRpZnVsJTIwc2NlbmVyeXxlbnwwfHwwfHw%3D&w=1000&q=80',
+  );
+  const [img2, setImg2] = useState(
+    'https://images.unsplash.com/photo-1592743263126-bb241ee76ac7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8YmVhdXRpZnVsJTIwc2NlbmVyeXxlbnwwfHwwfHw%3D&w=1000&q=80',
+  );
+  const [img3, setImg3] = useState(
+    'https://images.unsplash.com/photo-1592743263126-bb241ee76ac7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8YmVhdXRpZnVsJTIwc2NlbmVyeXxlbnwwfHwwfHw%3D&w=1000&q=80',
+  );
+  const [img4, setImg4] = useState(
+    'https://images.unsplash.com/photo-1592743263126-bb241ee76ac7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8YmVhdXRpZnVsJTIwc2NlbmVyeXxlbnwwfHwwfHw%3D&w=1000&q=80',
+  );
+  const [responseReceived, setResponseReceived] = useState(true);
 
+  const handlesreq = async () => {
     if (responseReceived) {
       return;
     }
@@ -100,7 +107,7 @@ useEffect(() => {
                 ]}
                 numColumns = {2}
                 renderItem={({ item }) => (
-                      <TouchableOpacity onPress={() => navigation.navigate('edit')} style={[styles.button]}>
+                      <TouchableOpacity onPress={() => navigation.navigate('edit', {image_url: item.uri})} style={[styles.button]}>
                         <Image style={styles.image} source={{ uri: item.uri }} resizeMode='cover'/>
                       </TouchableOpacity>
                     )}/>
