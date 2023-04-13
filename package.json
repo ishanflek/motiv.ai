@@ -31,7 +31,6 @@
     "react-native-view-shot": "^3.6.0",
     "react-navigation-material-bottom-tabs": "react-navigation/material-bottom-tabs",
     "replicate": "^0.7.0",
-    "uuid": "^9.0.0",
     "zustand": "^4.3.7"
   },
   "devDependencies": {

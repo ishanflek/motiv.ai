@@ -76,7 +76,7 @@ function Genin({navigation}) {
         <Appbar.Content color="white" title="Create"></Appbar.Content>
       </Appbar.Header>
       <View
-        className="overflow-hidden bg-stone-900 flex flex-col items-start justify-between w-full"
+        className="overflow-hidden bg-stone-900 flex flex-col items-start justify-between w-full h-[95%]"
         style={{paddingLeft: 24, paddingRight: 22, paddingBottom: 42}}>
         <Text
           className="shrink text-white-0 text-left"
