@@ -44,7 +44,7 @@ function Genout({ navigation }) {
             data={sampleImages}
             numColumns={2}
             renderItem={({item}) => (
-              <View style={{padding: 10, width: "48%", height: 280}}>
+              <View style={{padding: 8, width: "48%", height: 280}}>
                 <Image
                   style={{
                     width: '100%',

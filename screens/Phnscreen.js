@@ -23,7 +23,12 @@ function Phnscreen({ navigation }) {
       await confirmationResult.confirm(code);
       console.log('Valid code')
       setConfirmationResult('')
-      navigation.navigate('nns')
+      const user = auth().currentUser;
+      if (user && !user.metadata.creationTime) {
+        navigation.navigate('nns');
+      } else {
+        navigation.navigate('main');
+      }
     } catch (error) {
       console.log('Invalid code.');
     }

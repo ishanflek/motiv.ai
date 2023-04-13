@@ -71,11 +71,13 @@ function Editor({route, navigation}) {
       }
       console.log(uri);
 
-
-      const reference = storage().ref('b.png');
+      const reference = storage().ref('687y.png');
       const pathToFile = `${uri}`;
+      console.log(45)
+      console.log(pathToFile)
       const task = await reference.putFile(pathToFile);
       task.on('state_changed', taskSnapshot => {
+        console.log(342);
         console.log(`${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`);
       });
       
@@ -91,7 +93,7 @@ function Editor({route, navigation}) {
         {cancelable: false},
       );
     } catch (error) {
-      console.log('error', error);
+      console.log("The error is" + error);
     }
   };
 
