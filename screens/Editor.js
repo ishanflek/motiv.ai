@@ -73,7 +73,8 @@ function Editor({route, navigation}) {
       const cu = auth().currentUser;
       const uuid = cu.uid;
       console.log(uuid)
-      const imgname = uuidv4() + ".png";
+      const imgname = Math.floor(Date.now() / 1000) + ".png";
+      console.log(imgname)
       const reference = storage().ref(`${uuid}/${imgname}`);
 
       const pathToFile = `${uri}`;
