@@ -12,14 +12,20 @@ import {
   PermissionsAndroid,
   Alert,
   Platform,
+  Dimensions
 } from 'react-native';
 
-import ViewShot, {captureRef} from 'react-native-view-shot';
-// import CameraRoll from '@react-native-community/cameraroll';
+import { v4 as uuidv4 } from 'uuid';
 
-function Editor({navigation, route}) {
+import ViewShot, {captureRef} from 'react-native-view-shot';
+import storage from '@react-native-firebase/storage';
+import auth from '@react-native-firebase/auth';
+
+function Editor({route, navigation}) {
   const [text, setText] = useState('');
   const [editing, setEditing] = useState(true);
+  const imgurl = route.params.link
+  const fs = Dimensions.get("window").fontScale;
   const pan = useRef(new Animated.ValueXY()).current;
 
   const viewRef = useRef();
@@ -52,31 +58,40 @@ function Editor({navigation, route}) {
 
   const downloadImage = async () => {
     try {
-      // react-native-view-shot caputures component
       const uri = await captureRef(viewRef, {
         format: 'png',
         quality: 0.8,
-        result: 'base64',
       });
-      console.log(uri);
+      
       if (Platform.OS === 'android') {
         const granted = await getPermissionAndroid();
         if (!granted) {
           return;
         }
       }
-
-      // cameraroll saves image
       console.log(uri);
-      // const image = CameraRoll.save(uri);
-      // if (image) {
-      //   Alert.alert(
-      //     '',
-      //     'Image saved successfully.',
-      //     [{text: 'OK', onPress: () => {}}],
-      //     {cancelable: false},
-      //   );
-      // }
+      const cu = auth().currentUser;
+      const uuid = cu.uid;
+      console.log(uuid)
+      const imgname = uuidv4() + ".png";
+      const reference = storage().ref(`${uuid}/${imgname}`);
+
+      const pathToFile = `${uri}`;
+      const task = reference.putFile(pathToFile);
+      task.on('state_changed', taskSnapshot => {
+        console.log(`${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`);
+      });
+      
+      task.then(() => {
+        console.log('Image uploaded to the bucket!');
+      });
+      
+      Alert.alert(
+        '',
+        'Image saved successfully.',
+        [{text: 'OK', onPress: () => {}}],
+        {cancelable: false},
+      );
     } catch (error) {
       console.log('error', error);
     }
@@ -104,16 +119,17 @@ function Editor({navigation, route}) {
 
   return (
     <View style={styles.container}>
-      {/* <ViewShot
+      <ViewShot
+        style={{height: "90%"}}
         ref={viewRef}
         options={{
           fileName: 'Your-File-Name',
           format: 'jpg',
           quality: 0.9,
-          result: 'base64',
-        }}> */}
-      <ImageBackground source={{uri: route.params.image_url}}>
+        }}>  
         <View style={{width: '100%', height: '90%'}}>
+        <ImageBackground source={{uri: route.params.image_url}}>
+          <View style={{height: "100%"}}>
           <Animated.Text
             style={[
               styles.draggableText,
@@ -124,9 +140,10 @@ function Editor({navigation, route}) {
             {...panResponder.panHandlers}>
             {text}
           </Animated.Text>
+          </View>
+        </ImageBackground>
         </View>
-      </ImageBackground>
-      {/* </ViewShot> */}
+        </ViewShot>
       <View style={{height: '10%', backgroundColor: '#000000', padding: 5}}>
         {editing ? (
           <View style={styles.inputContainer}>

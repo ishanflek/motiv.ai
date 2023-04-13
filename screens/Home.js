@@ -20,20 +20,6 @@ function Home({navigation}) {
             </View>
             
           </View>
-            <View className="absolute flex flex-col items-center justify-between w-full" style={{width: '100%', top: 487, paddingLeft: 21, paddingRight: 24, paddingTop: 78}}>
-            <View className="flex flex-row items-center justify-between w-full">
-              <Text className="text-white text-left" style={{marginRight: 220, marginTop: 2, marginBottom: 2, fontSize: 14 / fs, color: 'white'}}>Top Picks</Text>
-              <Image source={require("../assets/238_6397.png")} alt=""></Image>
-            </View>
-            <View className="flex flex-row flex-wrap items-start justify-between w-full" style={{marginTop: 24}}>
-              <Image style={{marginRight: 12, marginBottom: 30,}} source={require("../assets/238_6403.png")} alt=""></Image>
-              <Image style={{marginRight: 12, marginBottom: 30}} source={require("../assets/238_6419.png")} alt=""></Image>
-              <Image style={{marginRight: 12, marginBottom: 30}} source={require("../assets/238_6415.png")} alt=""></Image>
-              <Image style={{marginRight: 12, marginBottom: 30}} source={require("../assets/238_6416.png")} alt=""></Image>
-              <Image style={{marginRight: 12}} source={require("../assets/238_6421.png")} alt=""></Image>
-              <Image style={{marginRight: 12}} source={require("../assets/238_6418.png")} alt=""></Image>
-            </View>
-          </View>
         </View>        
       </ScrollView>
       </View>      
@@ -41,3 +27,18 @@ function Home({navigation}) {
 }
 
 export default Home;
+
+{ /*<View className="absolute flex flex-col items-center justify-between w-full" style={{width: '100%', top: 487, paddingLeft: 21, paddingRight: 24, paddingTop: 78}}>
+<View className="flex flex-row items-center justify-between w-full">
+  <Text className="text-white text-left" style={{marginRight: 220, marginTop: 2, marginBottom: 2, fontSize: 14 / fs, color: 'white'}}>Top Picks</Text>
+  <Image source={require("../assets/238_6397.png")} alt=""></Image>
+</View>
+<View className="flex flex-row flex-wrap items-start justify-between w-full" style={{marginTop: 24}}>
+  <Image style={{marginRight: 12, marginBottom: 30,}} source={require("../assets/238_6403.png")} alt=""></Image>
+  <Image style={{marginRight: 12, marginBottom: 30}} source={require("../assets/238_6419.png")} alt=""></Image>
+  <Image style={{marginRight: 12, marginBottom: 30}} source={require("../assets/238_6415.png")} alt=""></Image>
+  <Image style={{marginRight: 12, marginBottom: 30}} source={require("../assets/238_6416.png")} alt=""></Image>
+  <Image style={{marginRight: 12}} source={require("../assets/238_6421.png")} alt=""></Image>
+  <Image style={{marginRight: 12}} source={require("../assets/238_6418.png")} alt=""></Image>
+</View>
+</View> */}

@@ -5,33 +5,27 @@
  * @format
  */
 import React, {useEffect, useState} from 'react';
-import {
-  Image,
-  StyleSheet,
-  Text,
-  View,
-  Linking,
-} from 'react-native';
+import {Image, StyleSheet, Text, View, Linking} from 'react-native';
 
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import CheckBox from '@react-native-community/checkbox';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { Provider as PaperProvider, useTheme } from 'react-native-paper';
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
+import {Provider as PaperProvider, useTheme} from 'react-native-paper';
+import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 
 import Phnscreen from './screens/Phnscreen';
 import Newname from './screens/Newname';
 import ToS from './screens/TOS';
-import Pref from './screens/Preferences'
-import Acc from './screens/Account'
-import About from './screens/About'
-import Help from './screens/Help'
-import Home from './screens/Home'
+import Pref from './screens/Preferences';
+import Acc from './screens/Account';
+import About from './screens/About';
+import Help from './screens/Help';
+import Home from './screens/Home';
 import Genout from './screens/Genout';
 import Genin from './screens/Genin';
 import Genbet from './screens/Genbet';
-import First from './screens/First'
+import First from './screens/First';
 import Editor from './screens/Editor';
 
 import auth from '@react-native-firebase/auth';
@@ -67,112 +61,119 @@ function Section({children, title}: SectionProps): JSX.Element {
 }
 */
 
-  const Stack = createStackNavigator();
-  const Tab = createMaterialBottomTabNavigator();
+const Stack = createStackNavigator();
+const Tab = createMaterialBottomTabNavigator();
 
 function MainTabNavigator() {
-    return (
-      <Tab.Navigator barStyle={{ backgroundColor: "#171817",}}>
-        <Tab.Screen name="Home" component={Home}
-          options={{
-            tabBarIcon: () => (
-            <Image source={require("./assets/home.png")} alt=""></Image>
-            )
-          }} />
-        <Tab.Screen name="Create" component={Genin}
-            options={{
-            tabBarIcon: () => (
-            <Image source={require("./assets/plus-circle.png")} alt=""></Image>
-            )
-          }} />
-        <Tab.Screen name="Profile" component={Genout}             options={{
-            tabBarIcon: () => (
-            <Image source={require("./assets/user.png")} alt=""></Image>
-            )
-          }} />
-          </Tab.Navigator>
-    );
-  }
+  return (
+    <Tab.Navigator barStyle={{backgroundColor: '#171817'}}>
+      <Tab.Screen
+        name="Home"
+        component={Home}
+        options={{
+          tabBarIcon: () => (
+            <Image source={require('./assets/home.png')} alt=""></Image>
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Create"
+        component={Genin}
+        options={{
+          tabBarIcon: () => (
+            <Image source={require('./assets/plus-circle.png')} alt=""></Image>
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={Genout}
+        options={{
+          tabBarIcon: () => (
+            <Image source={require('./assets/user.png')} alt=""></Image>
+          ),
+        }}
+      />
+    </Tab.Navigator>
+  );
+}
 
 function Splash({navigation}: {navigation: any}) {
-
-const [checked, setChecked] = React.useState(false);
+  const [checked, setChecked] = React.useState(false);
 
   return (
     <View>
-    <Image 
-    source={require('./mask1.png')}
-    style={styles.img}/>
-    <Text
-    style={styles.txt}>
-      motiv.ai
-    </Text>
-    <Text 
-    style={styles.txt2}>
-    Before you can start using our services, please read and agree to our terms and conditions.
-    </Text>
-    <View style={styles.con}>
-      <CheckBox
-      disabled={false}
-      value={checked}
-      onValueChange={(newValue) => setChecked(newValue)}
-      style={styles.chk}
-      />
-      <Text
-      style={styles.txt3}>I have read and agree to the 
-      <Text
-        style={styles.hltxt}
-        onPress={() => {
-          Linking.openURL('Put your terms and conditions');
-        }}> terms and conditions.</Text>
+      <Image source={require('./mask1.png')} style={styles.img} />
+      <Text style={styles.txt}>motiv.ai</Text>
+      <Text style={styles.txt2}>
+        Before you can start using our services, please read and agree to our
+        terms and conditions.
       </Text>
+      <View style={styles.con}>
+        <CheckBox
+          disabled={false}
+          value={checked}
+          onValueChange={newValue => setChecked(newValue)}
+          style={styles.chk}
+        />
+        <Text style={styles.txt3}>
+          I have read and agree to the
+          <Text
+            style={styles.hltxt}
+            onPress={() => {
+              Linking.openURL('Put your terms and conditions');
+            }}>
+            {' '}
+            terms and conditions.
+          </Text>
+        </Text>
+      </View>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate('second')}>
+        <Text style={styles.buttontext}>Continue</Text>
+      </TouchableOpacity>
     </View>
-    <TouchableOpacity style={styles.button} 
-      onPress={() => navigation.navigate('second')}>
-    <Text style={styles.buttontext}>Continue</Text>
-    </TouchableOpacity>
-  </View>
-  )
-}  
+  );
+}
 
 function App(): JSX.Element {
+  // Set an initializing state whilst Firebase connects
+  const [initializing, setInitializing] = useState(true);
+  const [user, setUser] = useState();
 
-    // Set an initializing state whilst Firebase connects
-    const [initializing, setInitializing] = useState(true);
-    const [user, setUser] = useState();
+  // verification code (OTP - One-Time-Passcode)
+  const [code, setCode] = useState('');
 
-    // verification code (OTP - One-Time-Passcode)
-    const [code, setCode] = useState('');
-  
-    // Handle user state changes
-    function onAuthStateChanged(user) {
-      setUser(user);
-      if (initializing) setInitializing(false);
-    }
-  
-    useEffect(() => {
-      const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-      return subscriber; // unsubscribe on unmount
-    }, []);
-  
-    function SplashScreen() {
-      return (
-        <View>
-          <Image source={require('./assets/243_2380.png')} />
-          <Text>Loading...</Text>
-        </View>
-      );
-    }
+  // Handle user state changes
+  function onAuthStateChanged(user) {
+    setUser(user);
+    if (initializing) setInitializing(false);
+  }
 
-    if (initializing) {
-      return <SplashScreen />;
-    }
-  
-    if (!user) {
-      return (
-        <PaperProvider theme={{
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, []);
+
+  function SplashScreen() {
+    return (
+      <View>
+        <Image source={require('./assets/243_2380.png')} />
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
+
+  if (initializing) {
+    return <SplashScreen />;
+  }
+
+  if (!user) {
+    return (
+      <PaperProvider
+        theme={{
           colors: {
-            
             primary: '#121416',
             onPrimary: '#ffffff',
             primaryContainer: '#d8d8d8',
@@ -212,28 +213,27 @@ function App(): JSX.Element {
               level2: '#12141620',
               level3: '#12141628',
               level4: '#12141631',
-              level5: '#12141636'
-            }
+              level5: '#12141636',
+            },
           },
           roundness: 3,
         }}>
         <NavigationContainer>
-          <Stack.Navigator
-            screenOptions={{headerShown: false}}>
-            <Stack.Screen name="splash" component={First}/>
-            <Stack.Screen name="first" component={First}/>
-            <Stack.Screen name="second" component={Phnscreen}/>
-            <Stack.Screen name="nns" component={Newname}/>
+          <Stack.Navigator screenOptions={{headerShown: false}}>
+            <Stack.Screen name="splash" component={First} />
+            <Stack.Screen name="first" component={First} />
+            <Stack.Screen name="second" component={Phnscreen} />
+            <Stack.Screen name="nns" component={Newname} />
           </Stack.Navigator>
         </NavigationContainer>
-        </PaperProvider>
-      );
-    }
-  
-    return (
-      <PaperProvider theme={{
+      </PaperProvider>
+    );
+  }
+
+  return (
+    <PaperProvider
+      theme={{
         colors: {
-          
           primary: '#121416',
           onPrimary: '#ffffff',
           primaryContainer: '#d8d8d8',
@@ -273,50 +273,52 @@ function App(): JSX.Element {
             level2: '#12141620',
             level3: '#12141628',
             level4: '#12141631',
-            level5: '#12141636'
-          }
+            level5: '#12141636',
+          },
         },
         roundness: 3,
       }}>
-        <NavigationContainer>
-          <Stack.Navigator
-            screenOptions={{headerShown: false}}>
-            <Stack.Screen name="splash" component={First}/>
-            <Stack.Screen name="first" component={First}/>
-            <Stack.Screen name="second" component={Phnscreen}/>
-            <Stack.Screen name="nns" component={Newname}/>
-            <Stack.Screen name="tos" component={ToS}/>
-            <Stack.Screen name="pref" component={Pref}/>
-            <Stack.Screen name="acc" component={Acc}/>
-            <Stack.Screen name="about" component={About}/>
-            <Stack.Screen name="help" component={Help}/>
-            <Stack.Screen name="edit" component={Editor}/>
-            <Stack.Screen name="main" component={MainTabNavigator}
-              options={{ headerShown: false }}/>
-            <Stack.Screen name="genbet" component={Genbet}/>
-          </Stack.Navigator>
-        </NavigationContainer>
-      </PaperProvider>
-    );
-  }
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{headerShown: false}}>
+          <Stack.Screen name="splash" component={First} />
+          <Stack.Screen name="first" component={First} />
+          <Stack.Screen name="second" component={Phnscreen} />
+          <Stack.Screen name="nns" component={Newname} />
+          <Stack.Screen name="tos" component={ToS} />
+          <Stack.Screen name="pref" component={Pref} />
+          <Stack.Screen name="acc" component={Acc} />
+          <Stack.Screen name="about" component={About} />
+          <Stack.Screen name="help" component={Help} />
+          <Stack.Screen name="edit" component={Editor} />
+          <Stack.Screen
+            name="main"
+            component={MainTabNavigator}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen name="genbet" component={Genbet} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </PaperProvider>
+  );
+}
 
 const styles = StyleSheet.create({
   con: {
-    flexDirection: "row",
+    flexDirection: 'row',
     width: 150,
-    marginTop:100,
+    marginTop: 100,
     marginHorizontal: 5,
-    display: 'flex'
+    display: 'flex',
   },
   chk: {
-    marginLeft: 40
+    marginLeft: 40,
   },
   hltxt: {
-    textDecorationLine: 'underline'
+    textDecorationLine: 'underline',
   },
   txt3: {
     marginLeft: 20,
-    width: 250
+    width: 250,
   },
   txt2: {
     textAlignVertical: 'center',
@@ -324,31 +326,31 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 80,
     height: 55,
-    paddingLeft: 80
+    paddingLeft: 80,
   },
   txt: {
-  fontSize: 65,
-  marginTop: 20,
-  paddingTop: 70,
-  paddingLeft: 80,
-  paddingBottom: 40,
+    fontSize: 65,
+    marginTop: 20,
+    paddingTop: 70,
+    paddingLeft: 80,
+    paddingBottom: 40,
   },
   img: {
     width: 230,
     height: 226,
     left: 76,
-    top: 81
+    top: 81,
   },
   button: {
     backgroundColor: 'black',
     paddingVertical: 12,
     paddingHorizontal: 20,
     paddingTop: 15,
-    borderRadius:4,
+    borderRadius: 4,
     width: 340,
     height: 50,
     marginLeft: 23,
-    marginTop: 30
+    marginTop: 30,
   },
   buttontext: {
     color: 'white',
