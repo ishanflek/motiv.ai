@@ -109,6 +109,7 @@ function Genin({navigation}) {
               {id: '6', name: ' in pop style', image: require('../assets/pop.png')},
               {id: '7', name: ' in oil style', image: require('../assets/oil.png')},
               {id: '8', name: ' in van gogh style', image: require('../assets/vangogh.png')},
+              {id: '9', name: ' in van gogh style', image: require('../assets/vangogh.png')},
             ]}
             numColumns={3}
             renderItem={({item}) => (

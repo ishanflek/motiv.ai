@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { Text, View, Image, ScrollView, Dimensions } from 'react-native';
+import { Text, View, Image, ScrollView, Dimensions, FlatList } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Appbar, Button, TextInput, Avatar, ProgressBar } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -15,7 +15,7 @@ function Genout({ navigation }) {
     const cu = auth().currentUser;
     const uuid = cu.uid;
     const imageRefs = await storage().ref().child(`${uuid}/`).listAll();
-    const urls = await Promise.all(imageRefs.items.map((ref) => ref.getDownloadURL())).split(",");
+    const urls = await Promise.all(imageRefs.items.map((ref) => ref.getDownloadURL()));
     setSampleImages(urls);
   };
 
@@ -41,13 +41,24 @@ function Genout({ navigation }) {
             style={{ paddingLeft: 40, marginTop: 48, marginBottom: 35, fontSize: 14 / fs }}>
             Your Motives
           </Text>
-          {sampleImages.map((url, index) => {
-            return (
-              <View style={{ justifyContent: 'center' }} key={index}>
-                <Image source={{ uri: url }} style={{ width: "30%", height: 40 }} />
-              </View>
-            );
-          })}
+          <FlatList
+            columnWrapperStyle={{justifyContent: 'space-between'}}
+            data={sampleImages}
+            numColumns={2}
+            renderItem={({item}) => (
+              <View style={{padding: 10, width: "48%", height: 280}}>
+                <Image
+                  style={{
+                    width: '100%',
+                    height: "100%",
+                    resizeMode: 'contain',
+                   }}
+                  source={{uri: item}}
+                  resizeMode="cover"
+                />
+                </View>
+            )}
+          />
         </View>
       </ScrollView>
     </View>

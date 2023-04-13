@@ -1,8 +1,25 @@
-import { Text, View, Image, ScrollView, Dimensions } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Text, View, Image, ScrollView, Dimensions, FlatList } from 'react-native';
 import { Appbar, Button, TextInput} from 'react-native-paper';
+import storage from '@react-native-firebase/storage';
+import auth from '@react-native-firebase/auth';
 
 function Home({navigation}) {
   const fs = Dimensions.get("window").fontScale;
+
+  const [sampleImages, setSampleImages] = useState([]);
+
+  const getSampleImages = async () => {
+    const cu = auth().currentUser;
+    const uuid = cu.uid;
+    const imageRefs = await storage().ref().child(`${uuid}/`).listAll();
+    const urls = await Promise.all(imageRefs.items.map((ref) => ref.getDownloadURL()));
+    setSampleImages(urls);
+  };
+
+  useEffect(() => {
+    getSampleImages();
+  }, []);
 
   return (
     <View>
@@ -18,7 +35,24 @@ function Home({navigation}) {
               <Text className="text-white text-left" style={{marginRight: 220, marginTop: 40, marginBottom: 2, fontSize: 14 / fs, color: 'white'}}>Recents</Text>
               <Image style={{marginTop: 30}}source={require("../assets/238_6397.png")} alt=""></Image>
             </View>
-            
+            <FlatList
+            columnWrapperStyle={{justifyContent: 'space-between'}}
+            data={sampleImages}
+            numColumns={2}
+            renderItem={({item}) => (
+              <View style={{padding: 10, width: "48%", height: 280}}>
+                <Image
+                  style={{
+                    width: '100%',
+                    height: "100%",
+                    resizeMode: 'contain',
+                   }}
+                  source={{uri: item}}
+                  resizeMode="cover"
+                />
+                </View>
+            )}
+          />
           </View>
         </View>        
       </ScrollView>
