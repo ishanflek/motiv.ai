@@ -26,7 +26,7 @@ function Editor({route, navigation}) {
   const [editing, setEditing] = useState(true);
   const imgurl = route.params.link
   const fs = Dimensions.get("window").fontScale;
-  const pan = useRef(new Animated.ValueXY()).current;
+  const pan = useRef(new Animated.ValueXY({ x: Dimensions.get("window").width/2, y: Dimensions.get("window").height/2 })).current;
 
   const viewRef = useRef();
 
@@ -70,12 +70,9 @@ function Editor({route, navigation}) {
         }
       }
       console.log(uri);
-      const cu = auth().currentUser;
-      const uuid = cu.uid;
-      const reference = storage().ref(`${uuid}/m.png`);
-      //      const reference = storage().ref(`${uuid}/${imgname}`);
-      //const imgname = Math.floor(Date.now() / 1000) + ".png";
-      console.log(uri)
+
+
+      const reference = storage().ref('b.png');
       const pathToFile = `${uri}`;
       const task = await reference.putFile(pathToFile);
       task.on('state_changed', taskSnapshot => {
@@ -85,6 +82,7 @@ function Editor({route, navigation}) {
       task.then(() => {
         console.log('Image uploaded to the bucket!');
       });
+
       
       Alert.alert(
         '',
@@ -134,7 +132,7 @@ function Editor({route, navigation}) {
             style={[
               styles.draggableText,
               {
-                transform: [{translateX: 100}, {translateY:100}],
+                transform: [{translateX: pan.x}, {translateY: pan.y}],
               },
             ]}
             {...panResponder.panHandlers}>

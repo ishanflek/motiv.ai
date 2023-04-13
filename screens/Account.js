@@ -21,7 +21,7 @@ function Acc({navigation}) {
           <View className="flex flex-col items-start justify-between w-full" style={{paddingLeft: 28, paddingRight: 20, paddingTop: 37, paddingBottom: 542}}>
             <TextInput className="w-full" label="Anshudweep Show" mode="flat" />
             <TextInput className="w-full" style={{marginTop: 16}} label="8697120705" mode="flat" />
-            <TouchableOpacity onPress={() => {navigation.navigate('first');}}>
+            <TouchableOpacity onPress={signOutUser}>
             <View className="flex flex-row items-center justify-center w-full gap-4" style={{marginTop: 10}}>
               <Text className="text-white text-left" style={{marginTop: 2, marginBottom: 2, fontSize: 18 / fs, color: 'white'}}>Logout</Text>
               <Image source={require("../assets/logout.png")} alt="" />

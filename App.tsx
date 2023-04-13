@@ -7,8 +7,6 @@
 import React, {useEffect, useState} from 'react';
 import {Image, StyleSheet, Text, View, Linking} from 'react-native';
 
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import CheckBox from '@react-native-community/checkbox';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {Provider as PaperProvider, useTheme} from 'react-native-paper';
@@ -98,52 +96,11 @@ function MainTabNavigator() {
   );
 }
 
-function Splash({navigation}: {navigation: any}) {
-  const [checked, setChecked] = React.useState(false);
-
-  return (
-    <View>
-      <Image source={require('./mask1.png')} style={styles.img} />
-      <Text style={styles.txt}>motiv.ai</Text>
-      <Text style={styles.txt2}>
-        Before you can start using our services, please read and agree to our
-        terms and conditions.
-      </Text>
-      <View style={styles.con}>
-        <CheckBox
-          disabled={false}
-          value={checked}
-          onValueChange={newValue => setChecked(newValue)}
-          style={styles.chk}
-        />
-        <Text style={styles.txt3}>
-          I have read and agree to the
-          <Text
-            style={styles.hltxt}
-            onPress={() => {
-              Linking.openURL('Put your terms and conditions');
-            }}>
-            {' '}
-            terms and conditions.
-          </Text>
-        </Text>
-      </View>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate('second')}>
-        <Text style={styles.buttontext}>Continue</Text>
-      </TouchableOpacity>
-    </View>
-  );
-}
 
 function App(): JSX.Element {
   // Set an initializing state whilst Firebase connects
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState();
-
-  // verification code (OTP - One-Time-Passcode)
-  const [code, setCode] = useState('');
 
   // Handle user state changes
   function onAuthStateChanged(user) {
@@ -280,21 +237,17 @@ function App(): JSX.Element {
       }}>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{headerShown: false}}>
-          <Stack.Screen name="splash" component={First} />
-          <Stack.Screen name="first" component={First} />
-          <Stack.Screen name="second" component={Phnscreen} />
-          <Stack.Screen name="nns" component={Newname} />
+        <Stack.Screen
+            name="main"
+            component={MainTabNavigator}
+            options={{headerShown: false}}
+          />
           <Stack.Screen name="tos" component={ToS} />
           <Stack.Screen name="pref" component={Pref} />
           <Stack.Screen name="acc" component={Acc} />
           <Stack.Screen name="about" component={About} />
           <Stack.Screen name="help" component={Help} />
           <Stack.Screen name="edit" component={Editor} />
-          <Stack.Screen
-            name="main"
-            component={MainTabNavigator}
-            options={{headerShown: false}}
-          />
           <Stack.Screen name="genbet" component={Genbet} />
         </Stack.Navigator>
       </NavigationContainer>

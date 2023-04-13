@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, Image, ScrollView, Dimensions, FlatList } from 'react-native';
+import { Text, View, Image, Dimensions, FlatList } from 'react-native';
 import { Appbar, Button, TextInput} from 'react-native-paper';
 import storage from '@react-native-firebase/storage';
 import auth from '@react-native-firebase/auth';
+import { ScrollView } from 'react-native-virtualized-view';
 
 function Home({navigation}) {
   const fs = Dimensions.get("window").fontScale;

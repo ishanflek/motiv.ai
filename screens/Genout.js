@@ -1,11 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { Text, View, Image, ScrollView, Dimensions, FlatList } from 'react-native';
+import { Text, View, Image, Dimensions, FlatList } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Appbar, Button, TextInput, Avatar, ProgressBar } from 'react-native-paper';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import storage from '@react-native-firebase/storage';
 import auth from '@react-native-firebase/auth';
+import { ScrollView } from 'react-native-virtualized-view';
 
 function Genout({ navigation }) {
   const fs = Dimensions.get('window').fontScale;
