@@ -13,16 +13,16 @@ function Genbet({navigation, route}) {
 
   console.log('Start');
   const [img1, setImg1] = useState(
-    'https://images.unsplash.com/photo-1592743263126-bb241ee76ac7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8YmVhdXRpZnVsJTIwc2NlbmVyeXxlbnwwfHwwfHw%3D&w=1000&q=80',
+    'https://replicate.delivery/pbxt/6bGBeFJbyeneqoLCx0qUisDYyOqYw3JL0RZlCSIuPOkVC2ihA/out-3.png',
   );
   const [img2, setImg2] = useState(
-    'https://images.unsplash.com/photo-1592743263126-bb241ee76ac7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8YmVhdXRpZnVsJTIwc2NlbmVyeXxlbnwwfHwwfHw%3D&w=1000&q=80',
+    'https://replicate.delivery/pbxt/6bGBeFJbyeneqoLCx0qUisDYyOqYw3JL0RZlCSIuPOkVC2ihA/out-3.png',
   );
   const [img3, setImg3] = useState(
-    'https://images.unsplash.com/photo-1592743263126-bb241ee76ac7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8YmVhdXRpZnVsJTIwc2NlbmVyeXxlbnwwfHwwfHw%3D&w=1000&q=80',
+    'https://replicate.delivery/pbxt/BN58UFehtDXDDaMIWakHOyWOEtHH32gJvOweFIc4G9qJBbxQA/out-1.png',
   );
   const [img4, setImg4] = useState(
-    'https://images.unsplash.com/photo-1592743263126-bb241ee76ac7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8YmVhdXRpZnVsJTIwc2NlbmVyeXxlbnwwfHwwfHw%3D&w=1000&q=80',
+    'https://replicate.delivery/pbxt/6bGBeFJbyeneqoLCx0qUisDYyOqYw3JL0RZlCSIuPOkVC2ihA/out-3.png',
   );
   const [responseReceived, setResponseReceived] = useState(true);
 
@@ -35,7 +35,7 @@ function Genbet({navigation, route}) {
       maxBodyLength: Infinity,
       url: req,
       headers: { 
-        'Authorization': 'Token 04890391d41e038f86c2e5f2e112e1e89b9efdcf'
+        'Authorization': 'Token 144eeff7bc3fbd1da49fbe0558b823979f603e28'
       }
     };
 
@@ -82,7 +82,7 @@ useEffect(() => {
         </Appbar.Content>
     </Appbar.Header>
       <View style={styles.loading}>
-        <ActivityIndicator size="large" color="#000" style={styles.spinner} />
+        <ActivityIndicator size="large" color="white" style={styles.spinner} />
         <Text style={styles.loadingText}>Loading...</Text>
       </View>
       </View>

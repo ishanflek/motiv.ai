@@ -42,16 +42,16 @@ function Genin({navigation}) {
       maxBodyLength: Infinity,
       url: 'https://api.replicate.com/v1/predictions',
       headers: {
-        Authorization: 'Token 04890391d41e038f86c2e5f2e112e1e89b9efdcf',
+        Authorization: 'Token 144eeff7bc3fbd1da49fbe0558b823979f603e28',
         'Content-Type': 'application/json',
       },
       data: data,
     };
 
-    // const response = await axios.request(config);
+    const response = await axios.request(config);
     navigation.navigate('genbet', {
-      // getreq: response.data.urls.get,
-      getreq: {},
+      getreq: response.data.urls.get,
+      //getreq: {},
       tes: pr,
     });
   };
@@ -76,7 +76,7 @@ function Genin({navigation}) {
         <Appbar.Content color="white" title="Create"></Appbar.Content>
       </Appbar.Header>
       <View
-        className="overflow-hidden bg-stone-900 flex flex-col items-start justify-between w-full h-[95%]"
+        className="overflow-hidden bg-stone-900 flex flex-col items-start justify-between w-full"
         style={{paddingLeft: 24, paddingRight: 22, paddingBottom: 42}}>
         <Text
           className="shrink text-white-0 text-left"
