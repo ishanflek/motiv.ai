@@ -1,4 +1,4 @@
-import { Text, View, Image, ScrollView, Dimensions } from 'react-native';
+import { Text, Alert,View, Image, ScrollView, Dimensions } from 'react-native';
 import { Appbar, Button, TextInput, Avatar, ProgressBar } from 'react-native-paper';
 import CheckBox from '@react-native-community/checkbox';
 import React from 'react'; 
@@ -7,6 +7,14 @@ import { NavigationContainer } from '@react-navigation/native';
 function First({navigation}) {
   const fs = Dimensions.get("window").fontScale;
   const [checked, setChecked] = React.useState(false);
+
+  const handleContinue = () => {
+    if (!checked) {
+      Alert.alert('Agreement Required', 'Please agree to the terms and conditions before continuing.');
+      return;
+    }
+    navigation.navigate('second');
+  };
 
   return (
       <ScrollView showVerticalScrollIndicator={false}>
@@ -26,7 +34,7 @@ function First({navigation}) {
               <Text className="text-white-0 underline">terms and conditions.</Text>
             </Text>
           </View>
-          <Button className="w-full" style={{marginTop: 19}} onPress={() => {navigation.navigate('second')}} mode="contained" labelStyle={{"padding":5}}>Continue</Button>
+          <Button className="w-full" style={{marginTop: 19}} onPress={handleContinue} mode="contained" labelStyle={{"padding":5}}>Continue</Button>
         </View>
       </ScrollView>
   );

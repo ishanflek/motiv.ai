@@ -15,11 +15,12 @@ import {
   Dimensions
 } from 'react-native';
 
-import { v4 as uuidv4 } from 'uuid';
+import Slider from 'react-native-slider-text';
 
 import ViewShot, {captureRef} from 'react-native-view-shot';
 import storage from '@react-native-firebase/storage';
 import auth from '@react-native-firebase/auth';
+import { white } from 'react-native-paper/lib/typescript/src/styles/themes/v2/colors';
 
 function Editor({route, navigation}) {
   const [text, setText] = useState('');
@@ -27,8 +28,12 @@ function Editor({route, navigation}) {
   const imgurl = route.params.link
   const fs = Dimensions.get("window").fontScale;
   const pan = useRef(new Animated.ValueXY({ x: Dimensions.get("window").width/2, y: Dimensions.get("window").height/2 })).current;
-
+  const [sliderValue, setSliderValue] = useState(12);
   const viewRef = useRef();
+
+  const handleSliderChange = (value) => {
+    setTextSize(value);
+  }
 
   const getPermissionAndroid = async () => {
     try {
@@ -111,7 +116,7 @@ function Editor({route, navigation}) {
   return (
     <View style={styles.container}>
       <ViewShot
-        style={{height: "90%"}}
+        style={{height: "80%"}}
         ref={viewRef}
         options={{
           fileName: 'Your-File-Name',
@@ -122,12 +127,13 @@ function Editor({route, navigation}) {
         <ImageBackground source={{uri: route.params.image_url}}>
           <View style={{height: "100%"}}>
           <Animated.Text
-            style={[
-              styles.draggableText,
-              {
-                transform: [{translateX: pan.x}, {translateY: pan.y}],
-              },
-            ]}
+        style={[
+          styles.draggableText,
+          {fontSize: sliderValue},
+          {
+            transform: [{translateX: pan.x}, {translateY: pan.y}],
+          },
+        ]}
             {...panResponder.panHandlers}>
             {text}
           </Animated.Text>
@@ -135,7 +141,7 @@ function Editor({route, navigation}) {
         </ImageBackground>
         </View>
         </ViewShot>
-      <View style={{height: '10%', backgroundColor: '#000000', padding: 5}}>
+      <View style={{height: '20%', backgroundColor: '#000000', padding: 5}}>
         {editing ? (
           <View style={styles.inputContainer}>
             <TextInput
@@ -145,6 +151,9 @@ function Editor({route, navigation}) {
               onChangeText={setText}
               onSubmitEditing={handleInputSubmit}
             />
+            <View style={styles.slidercontainer}>
+              <Slider thumbTintColor="white" minimumTrackTintColor="#FFFFFF" maximumTrackTintColor="white" minimumValue={24} maximumValue={60} step={5} stepValue={1} onValueChange={(id) => setSliderValue(id)} sliderValue={sliderValue} />
+            </View>
           </View>
         ) : (
           <View className="flex flex-row justify-around items-center">
@@ -185,23 +194,22 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
   },
   draggableText: {
-    fontSize: 24,
     fontWeight: 'bold',
     color: 'black',
     width: "70%",
     textAlign: 'center'
   },
   inputContainer: {
-    borderRadius: 10,
-    borderWidth: 2,
-    borderColor: 'white',
-    elevation: 3,
+    justifyContent: 'space-around',
+    paddingHorizontal: 10,
+    marginBottom: 5, // add this to reduce the gap
   },
   input: {
     fontSize: 18,
     color: 'white',
     width: '100%',
-    paddingHorizontal: 10,
+    paddingHorizontal: 12,
+    paddingVertical: 12,
   },
   editButtonContainer: {
     position: 'absolute',
@@ -224,6 +232,18 @@ const styles = StyleSheet.create({
     padding: 10,
     elevation: 3,
     opacity: 0.8,
+  },
+  slidercontainer: {
+    flex: 1,
+    color: 'white'
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+  tag: {
+    fontSize: 14,
+    paddingVertical: 10,
   },
 });
 
