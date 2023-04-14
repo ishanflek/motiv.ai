@@ -424,7 +424,7 @@ PODS:
   - RNFBApp (17.4.2):
     - Firebase/CoreOnly (= 10.7.0)
     - React-Core
-  - RNFBAuth (17.4.1):
+  - RNFBAuth (17.4.2):
     - Firebase/Auth (= 10.7.0)
     - React-Core
     - RNFBApp
@@ -659,7 +659,7 @@ SPEC CHECKSUMS:
   RNCCheckbox: 43bcc6493611468af0e19f19f029dab3da8561c4
   RNFastImage: 5c9c9fed9c076e521b3f509fe79e790418a544e8
   RNFBApp: 55dbfc574e5ae414f2984394934f79f87eb4b050
-  RNFBAuth: 0645815a805a9ebacc37bdf97debd816904399c2
+  RNFBAuth: d30acc0f5f169bc28c7fcbf1b45cd061cc647590
   RNFBStorage: d40ebadfad4755ed1ef6a74cae84c9ee9ca47ffd
   RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
   RNScreens: 218801c16a2782546d30bd2026bb625c0302d70f

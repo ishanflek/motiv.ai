@@ -70,22 +70,13 @@ function Editor({route, navigation}) {
         }
       }
       console.log(uri);
-
-      const reference = storage().ref('687y.png');
-      const pathToFile = `${uri}`;
+      const response = await fetch(uri);
+      const blob = await response.blob();
+      const storageRef = storage().ref('1234567.png');
+      //const pathToFile = `${require(uri)}`;
       console.log(45)
-      console.log(pathToFile)
-      const task = await reference.putFile(pathToFile);
-      task.on('state_changed', taskSnapshot => {
-        console.log(342);
-        console.log(`${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`);
-      });
-      
-      task.then(() => {
-        console.log('Image uploaded to the bucket!');
-      });
-
-      
+      //console.log(pathToFile)
+      await storageRef.put(blob);
       Alert.alert(
         '',
         'Image saved successfully.',
