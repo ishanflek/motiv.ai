@@ -180,7 +180,6 @@ function App(): JSX.Element {
             <Stack.Screen name="splash" component={First} />
             <Stack.Screen name="first" component={First} />
             <Stack.Screen name="second" component={Phnscreen} />
-            <Stack.Screen name="nns" component={Newname} />
           </Stack.Navigator>
         </NavigationContainer>
       </PaperProvider>
@@ -237,6 +236,7 @@ function App(): JSX.Element {
       }}>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{headerShown: false}}>
+        <Stack.Screen name="nns" component={Newname} />
         <Stack.Screen
             name="main"
             component={MainTabNavigator}

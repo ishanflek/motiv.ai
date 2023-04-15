@@ -23,25 +23,35 @@ function Phnscreen({ navigation }) {
       await confirmationResult.confirm(code);
       console.log('Valid code')
       setConfirmationResult('')
-      const user = auth().currentUser;
-      if (user && !user.metadata.creationTime) {
-        navigation.navigate('nns');
-      } else {
-        navigation.navigate('main');
+      const subscriber = auth().onAuthStateChanged(user => {
+        if (user) 
+        { 
+          if(user.metadata.creationTime === user.metadata.lastSignInTime) {
+          navigation.navigate('nns');
+        } else {
+          navigation.navigate('main');
+        }
       }
+      else {
+        navigation.navigate('first')
+      }
+      });
     } catch (error) {
       console.log('Invalid code.');
     }
   }
 
-  useEffect(() => {
+{/*}  useEffect(() => {
     // Listen for changes in the authentication state
     const subscriber = auth().onAuthStateChanged(user => {
-      if (user) {
-        navigation.navigate('main')
+      if (user && user.metadata.creationTime === user.metadata.lastSignInTime) {
+        navigation.navigate('nns');
+      } else {
+        navigation.navigate('main');
       }
     });
   }, []);
+*/}
 
   return (
     <View className="overflow-hidden bg-stone-900 h-full flex flex-col justify-between w-full" style={{ paddingLeft: 22, paddingRight: 24, paddingTop: 60, paddingBottom: 454 }}>

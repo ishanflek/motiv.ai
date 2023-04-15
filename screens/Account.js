@@ -6,7 +6,7 @@ function Acc({navigation}) {
   async function signOutUser() {
     try {
       await auth().signOut();
-      navigation.navigate('phn');
+      navigation.navigate('first');
     } catch (error) {
       console.error('Error signing out:', error);
     }
