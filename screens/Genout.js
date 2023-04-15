@@ -8,6 +8,7 @@ import { ScrollView } from 'react-native-virtualized-view';
 function Genout({ navigation }) {
   const fs = Dimensions.get('window').fontScale;
   const [sampleImages, setSampleImages] = useState([]);
+  const [folders, setFolders] = useState([]);
 
   const getSampleImages = async () => {
     const cu = auth().currentUser;
@@ -17,8 +18,19 @@ function Genout({ navigation }) {
     setSampleImages(urls);
   };
 
+  const listFolders = async () => {
+    const currentUser = auth().currentUser;
+    const uid = currentUser.uid;
+    const listResult = await storage().ref().child(uid).list({
+      delimiter: '/'
+    });
+    const folderNames = listResult.prefixes.map((prefix) => prefix.name);
+    setFolders(folderNames);
+  };
+
   useEffect(() => {
     getSampleImages();
+    listFolders();
   }, []);
 
   return (
@@ -29,7 +41,7 @@ function Genout({ navigation }) {
         </TouchableOpacity>
         <View className="bg-stone-900 h-full" style={{ height: '100%' }}>
           <Text className="text-white-0 text-center" style={{ fontSize: 36 / fs }}>
-            👋 Nikhil
+          {folders.length > 0 ? `👋 ${folders[0]}` : null}
           </Text>
           <Text className="text-white-0 text-center" style={{ marginTop: 8, fontSize: 12 / fs }}>
             4 motivs

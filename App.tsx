@@ -1,15 +1,9 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
 import React, {useEffect, useState} from 'react';
 import {Image, StyleSheet, Text, View, Linking} from 'react-native';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {Provider as PaperProvider, useTheme} from 'react-native-paper';
+import {Provider as PaperProvider, useTheme, BottomNavigation} from 'react-native-paper';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 
 import Phnscreen from './screens/Phnscreen';
@@ -27,6 +21,8 @@ import First from './screens/First';
 import Editor from './screens/Editor';
 
 import auth from '@react-native-firebase/auth';
+
+import CustomIcon from './screens/CustomIcon';
 /*
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -94,7 +90,36 @@ function MainTabNavigator() {
       />
     </Tab.Navigator>
   );
-}
+} 
+
+{/*
+const MainTabNavigator = () => {
+  const [index, setIndex] = useState(0);
+  const [routes] = useState([
+    { key: 'home', title: 'Home', icon: 'home' },
+    { key: 'create', title: 'Create', icon: 'plus-circle' },
+    { key: 'profile', title: 'Profile', icon: 'user' },
+  ]);
+
+  const renderScene = BottomNavigation.SceneMap({
+    home: Home,
+    create: Genin,
+    profile: Genout,
+  });
+
+  return (
+    <BottomNavigation
+      barStyle={{ backgroundColor: '#171817' }}
+      activeColor='#ff0000'
+      inactiveColor='#0000ff'
+      navigationState={{ index, routes }}
+      onIndexChange={setIndex}
+      renderScene={renderScene}
+      labeled={false}
+    />
+  );
+};
+*/}
 
 
 function App(): JSX.Element {
@@ -236,7 +261,6 @@ function App(): JSX.Element {
       }}>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{headerShown: false}}>
-        <Stack.Screen name="nns" component={Newname} />
         <Stack.Screen
             name="main"
             component={MainTabNavigator}
@@ -249,6 +273,7 @@ function App(): JSX.Element {
           <Stack.Screen name="help" component={Help} />
           <Stack.Screen name="edit" component={Editor} />
           <Stack.Screen name="genbet" component={Genbet} />
+          <Stack.Screen name="nns" component={Newname} />
         </Stack.Navigator>
       </NavigationContainer>
     </PaperProvider>
