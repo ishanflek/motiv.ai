@@ -92,6 +92,7 @@ function MainTabNavigator() {
   );
 } 
 
+
 {/*
 const MainTabNavigator = () => {
   const [index, setIndex] = useState(0);
@@ -126,7 +127,51 @@ function App(): JSX.Element {
   // Set an initializing state whilst Firebase connects
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState();
-
+  const theme = {colors: {
+    primary: '#121416',
+    onPrimary: '#ffffff',
+    primaryContainer: '#d8d8d8',
+    onPrimaryContainer: '#050506',
+    secondary: '#4e6355',
+    onSecondary: '#ffffff',
+    secondaryContainer: 'transparent',
+    onSecondaryContainer: '#1D1D1D',
+    tertiary: '#3c6471',
+    onTertiary: '#ffffff',
+    tertiaryContainer: '#dfe5e7',
+    onTertiaryContainer: '#0f191c',
+    error: '#ba1a1a',
+    onError: '#ffffff',
+    errorContainer: '#f4d9d9',
+    onErrorContainer: '#2f0707',
+    background: '#fcfcfc',
+    onBackground: '#171817',
+    surface: '#fcfcfc',
+    onSurface: 'white',
+    surfaceVariant: '#e4e5e3',
+    onSurfaceVariant: '#444841',
+    outline: '#767b72',
+    outlineVariant: '#c8cac7',
+    onOutline: '#444841',
+    onOutlineVariant: '#c8cac7',
+    shadow: '#000000',
+    scrim: '#000000',
+    inversePrimary: '#b0b1b1',
+    inverseSurface: '#171817',
+    inverseOnSurface: '#e4e4e4',
+    surfaceDisabled: '#17181731',
+    onSurfaceDisabled: '#17181797',
+    elevation: {
+      level0: 'transparent',
+      level1: '#12141613',
+      level2: '#12141620',
+      level3: '#12141628',
+      level4: '#12141631',
+      level5: '#12141636',
+    },
+  },
+  roundness: 3,
+}
   // Handle user state changes
   function onAuthStateChanged(user) {
     setUser(user);
@@ -154,52 +199,7 @@ function App(): JSX.Element {
   if (!user) {
     return (
       <PaperProvider
-        theme={{
-          colors: {
-            primary: '#121416',
-            onPrimary: '#ffffff',
-            primaryContainer: '#d8d8d8',
-            onPrimaryContainer: '#050506',
-            secondary: '#4e6355',
-            onSecondary: '#ffffff',
-            secondaryContainer: 'transparent',
-            onSecondaryContainer: '#1D1D1D',
-            tertiary: '#3c6471',
-            onTertiary: '#ffffff',
-            tertiaryContainer: '#dfe5e7',
-            onTertiaryContainer: '#0f191c',
-            error: '#ba1a1a',
-            onError: '#ffffff',
-            errorContainer: '#f4d9d9',
-            onErrorContainer: '#2f0707',
-            background: '#fcfcfc',
-            onBackground: '#171817',
-            surface: '#fcfcfc',
-            onSurface: '#171817',
-            surfaceVariant: '#e4e5e3',
-            onSurfaceVariant: '#444841',
-            outline: '#767b72',
-            outlineVariant: '#c8cac7',
-            onOutline: '#444841',
-            onOutlineVariant: '#c8cac7',
-            shadow: '#000000',
-            scrim: '#000000',
-            inversePrimary: '#b0b1b1',
-            inverseSurface: '#171817',
-            inverseOnSurface: '#e4e4e4',
-            surfaceDisabled: '#17181731',
-            onSurfaceDisabled: '#17181797',
-            elevation: {
-              level0: 'transparent',
-              level1: '#12141613',
-              level2: '#12141620',
-              level3: '#12141628',
-              level4: '#12141631',
-              level5: '#12141636',
-            },
-          },
-          roundness: 3,
-        }}>
+        theme={theme}>
         <NavigationContainer>
           <Stack.Navigator screenOptions={{headerShown: false}}>
             <Stack.Screen name="splash" component={First} />
@@ -213,52 +213,7 @@ function App(): JSX.Element {
 
   return (
     <PaperProvider
-      theme={{
-        colors: {
-          primary: '#121416',
-          onPrimary: '#ffffff',
-          primaryContainer: '#d8d8d8',
-          onPrimaryContainer: '#050506',
-          secondary: '#4e6355',
-          onSecondary: '#ffffff',
-          secondaryContainer: 'transparent',
-          onSecondaryContainer: '#1D1D1D',
-          tertiary: '#3c6471',
-          onTertiary: '#ffffff',
-          tertiaryContainer: '#dfe5e7',
-          onTertiaryContainer: '#0f191c',
-          error: '#ba1a1a',
-          onError: '#ffffff',
-          errorContainer: '#f4d9d9',
-          onErrorContainer: '#2f0707',
-          background: '#fcfcfc',
-          onBackground: '#171817',
-          surface: '#fcfcfc',
-          onSurface: '#171817',
-          surfaceVariant: '#e4e5e3',
-          onSurfaceVariant: '#444841',
-          outline: '#767b72',
-          outlineVariant: '#c8cac7',
-          onOutline: '#444841',
-          onOutlineVariant: '#c8cac7',
-          shadow: '#000000',
-          scrim: '#000000',
-          inversePrimary: '#b0b1b1',
-          inverseSurface: '#171817',
-          inverseOnSurface: '#e4e4e4',
-          surfaceDisabled: '#17181731',
-          onSurfaceDisabled: '#17181797',
-          elevation: {
-            level0: 'transparent',
-            level1: '#12141613',
-            level2: '#12141620',
-            level3: '#12141628',
-            level4: '#12141631',
-            level5: '#12141636',
-          },
-        },
-        roundness: 3,
-      }}>
+    theme={theme}>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{headerShown: false}}>
         <Stack.Screen

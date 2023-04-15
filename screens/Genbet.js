@@ -16,13 +16,13 @@ function Genbet({navigation, route}) {
     'https://replicate.delivery/pbxt/6bGBeFJbyeneqoLCx0qUisDYyOqYw3JL0RZlCSIuPOkVC2ihA/out-3.png',
   );
   const [img2, setImg2] = useState(
-    'https://replicate.delivery/pbxt/6bGBeFJbyeneqoLCx0qUisDYyOqYw3JL0RZlCSIuPOkVC2ihA/out-3.png',
+    'https://replicate.delivery/pbxt/1hPc4w7ZY1YcBhx9U48wQzwZf9C6YtiFcv6TovT80H9AOjYIA/out-1.png',
   );
   const [img3, setImg3] = useState(
     'https://replicate.delivery/pbxt/BN58UFehtDXDDaMIWakHOyWOEtHH32gJvOweFIc4G9qJBbxQA/out-1.png',
   );
   const [img4, setImg4] = useState(
-    'https://replicate.delivery/pbxt/6bGBeFJbyeneqoLCx0qUisDYyOqYw3JL0RZlCSIuPOkVC2ihA/out-3.png',
+    'https://replicate.delivery/pbxt/xJga7PACR4qjMR1cDZ5JIfiYBngxBx2VoNHjCWChEbPBOjYIA/out-3.png',
   );
   const [responseReceived, setResponseReceived] = useState(true);
 

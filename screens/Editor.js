@@ -16,7 +16,7 @@ import {
   Share
 } from 'react-native';
 
-import Slider from 'react-native-slider-text';
+import Slider from '@react-native-community/slider';
 
 import ViewShot, {captureRef} from 'react-native-view-shot';
 import storage from '@react-native-firebase/storage';
@@ -32,6 +32,9 @@ function Editor({route, navigation}) {
   const [sliderValue, setSliderValue] = useState(12);
   const viewRef = useRef();
   const [txtcolor, setTxtColor] = useState('#000000');
+  let isImageUploaded = false;
+  let downloadUrl = ""
+
 
   const handleColorChange = (newColor) => {
     setColor(newColor);
@@ -65,6 +68,20 @@ function Editor({route, navigation}) {
     }
   };
 
+  const shareImage = async () => {
+    try {
+      if (!isImageUploaded) {
+        Alert.alert('Please upload an image first.');
+        return;
+      }
+      await Share.share({
+        message: downloadUrl,
+      });
+    } catch (error) {
+      Alert.alert(error.message);
+    }
+};
+
   const downloadImage = async () => {
     try {
       const uri = await captureRef(viewRef, {
@@ -79,13 +96,23 @@ function Editor({route, navigation}) {
         }
       }
       console.log(uri);
-      const response = await fetch(uri);
-      const blob = await response.blob();
-      const storageRef = storage().ref('1234567.png');
-      //const pathToFile = `${require(uri)}`;
+      const currentUser = auth().currentUser;
+      const uid = currentUser.uid;
+      imgName= '1322211.png';
+      let reference = storage().ref().child(uid).child(imgName);     
+      let task = reference.putFile(uri);              
+      Alert.alert('Uploading the image, wait till uploading finishes')
+      task.then(() => {
+        console.log('Image uploaded to the bucket!');
+        reference.getDownloadURL().then((url) => {
+            console.log('Download URL:', url);
+            downloadUrl = url
+            isImageUploaded = true
+            Alert.alert('Image has been uploaded. You can share now')
+          }).catch((e) => console.log('Error getting download URL => ', e));
+      }).catch((e) => console.log('uploading image error => ', e));
+
       console.log(45)
-      //console.log(pathToFile)
-      await storageRef.put(blob);
       Alert.alert(
         '',
         'Image saved successfully.',
@@ -120,7 +147,7 @@ function Editor({route, navigation}) {
   return (
     <View style={styles.container}>
       <ViewShot
-        style={{height: "80%"}}
+        style={{height: "70%"}}
         ref={viewRef}
         options={{
           fileName: 'Your-File-Name',
@@ -146,20 +173,22 @@ function Editor({route, navigation}) {
         </ImageBackground>
         </View>
         </ViewShot>
-      <View style={{height: '20%', backgroundColor: '#000000', padding: 5}}>
+      <View style={{height: '30%', backgroundColor: '#000000', padding: 0, margin: 0}}>
         {editing ? (
           <View style={styles.inputContainer}>
+            <Text style={{color: 'white', marginTop: 12}}>Font Size</Text>
+            <View style={styles.slidercontainer}>
+              <Slider thumbTintColor="white" minimumTrackTintColor="#FFFFFF" maximumTrackTintColor="white" minimumValue={24} maximumValue={60} step={5} stepValue={1} onValueChange={(id) => setSliderValue(id)} sliderValue={sliderValue} />
+              <Slider style={styles.slider} minimumValue={0} maximumValue={10} minimumTrackTintColor="#FFFFFF" maximumTrackTintColor="#000000" thumbTintColor={txtcolor} onValueChange={handleColorChange}/>
+            </View>
             <TextInput
               style={styles.input}
               placeholder="Enter Quote here"
               placeholderTextColor="gray"
               onChangeText={setText}
               onSubmitEditing={handleInputSubmit}
+              value={text}
             />
-            <View style={styles.slidercontainer}>
-              <Slider thumbTintColor="white" minimumTrackTintColor="#FFFFFF" maximumTrackTintColor="white" minimumValue={24} maximumValue={60} step={5} stepValue={1} onValueChange={(id) => setSliderValue(id)} sliderValue={sliderValue} />
-              <Slider style={styles.slider} minimumValue={0} maximumValue={10} minimumTrackTintColor="#FFFFFF" maximumTrackTintColor="#000000" thumbTintColor={txtcolor} onValueChange={handleColorChange}/>
-            </View>
           </View>
         ) : (
           <View className="flex flex-row justify-around items-center">
@@ -208,7 +237,8 @@ const styles = StyleSheet.create({
   inputContainer: {
     justifyContent: 'space-around',
     paddingHorizontal: 10,
-    marginBottom: 5, // add this to reduce the gap
+    marginBottom: 0, // add this to reduce the gap
+    padding: 0, margin: 0
   },
   input: {
     fontSize: 18,
@@ -216,6 +246,9 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingHorizontal: 12,
     paddingVertical: 12,
+    borderWidth: 2,
+    borderColor: 'white',
+    marginTop: 35
   },
   editButtonContainer: {
     position: 'absolute',
@@ -241,7 +274,8 @@ const styles = StyleSheet.create({
   },
   slidercontainer: {
     flex: 1,
-    color: 'white'
+    color: 'white',
+    marginBottom: 15
   },
   title: {
     fontSize: 24,
