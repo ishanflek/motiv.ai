@@ -2,3 +2,4 @@
 "https://replicate.delivery/pbxt/1hPc4w7ZY1YcBhx9U48wQzwZf9C6YtiFcv6TovT80H9AOjYIA/out-1.png", 
 "https://replicate.delivery/pbxt/r6WjdH5VnTIeayze6et0HCN82bS54BUmYYBUnFBc70WD4MihA/out-2.png", 
 "https://replicate.delivery/pbxt/xJga7PACR4qjMR1cDZ5JIfiYBngxBx2VoNHjCWChEbPBOjYIA/out-3.png"]
+      <!-- android:roundIcon="@mipmap/ic_launcher_round" -->

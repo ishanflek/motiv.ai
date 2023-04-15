@@ -12,7 +12,8 @@ import {
   PermissionsAndroid,
   Alert,
   Platform,
-  Dimensions
+  Dimensions,
+  Share
 } from 'react-native';
 
 import Slider from 'react-native-slider-text';
@@ -30,10 +31,13 @@ function Editor({route, navigation}) {
   const pan = useRef(new Animated.ValueXY({ x: Dimensions.get("window").width/2, y: Dimensions.get("window").height/2 })).current;
   const [sliderValue, setSliderValue] = useState(12);
   const viewRef = useRef();
+  const [txtcolor, setTxtColor] = useState('#000000');
 
-  const handleSliderChange = (value) => {
-    setTextSize(value);
-  }
+  const handleColorChange = (newColor) => {
+    setColor(newColor);
+  };
+
+
 
   const getPermissionAndroid = async () => {
     try {
@@ -130,6 +134,7 @@ function Editor({route, navigation}) {
         style={[
           styles.draggableText,
           {fontSize: sliderValue},
+          {color: txtcolor},
           {
             transform: [{translateX: pan.x}, {translateY: pan.y}],
           },
@@ -153,6 +158,7 @@ function Editor({route, navigation}) {
             />
             <View style={styles.slidercontainer}>
               <Slider thumbTintColor="white" minimumTrackTintColor="#FFFFFF" maximumTrackTintColor="white" minimumValue={24} maximumValue={60} step={5} stepValue={1} onValueChange={(id) => setSliderValue(id)} sliderValue={sliderValue} />
+              <Slider style={styles.slider} minimumValue={0} maximumValue={10} minimumTrackTintColor="#FFFFFF" maximumTrackTintColor="#000000" thumbTintColor={txtcolor} onValueChange={handleColorChange}/>
             </View>
           </View>
         ) : (
@@ -165,7 +171,7 @@ function Editor({route, navigation}) {
               <Image source={require('../assets/save.png')} />
               <Text style={{color: 'white'}}>Save</Text>
             </TouchableOpacity>
-            <TouchableOpacity className="bg-[#141519] rounded-lg w-24 flex flex-col items-center p-2" onPress={downloadImage}>
+            <TouchableOpacity className="bg-[#141519] rounded-lg w-24 flex flex-col items-center p-2" onPress={shareImage}>
               <Image source={require('../assets/share.png')} />
               <Text style={{color: 'white'}}>Share</Text>
             </TouchableOpacity>
