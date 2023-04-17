@@ -16,10 +16,12 @@ function Genbet({navigation, route}) {
   const [q2, setQ2] = useState("");
   const [q3, setQ3] = useState("");
   const [q4, setQ4] = useState("");
+  const [loading,setLoading] = useState(false)
   const [selectedQuote, setSelectedQuote] = useState(null);
 
   const handlequote = async() => {
     console.log("quote")
+    setLoading(true)
     let data = JSON.stringify({
       "model": "command-xlarge-beta",
       "prompt": prt,
@@ -27,7 +29,8 @@ function Genbet({navigation, route}) {
       "temperature": 0.4,
       "k": 0,
       "stop_sequences": [],
-      "return_likelihoods": "NONE"
+      "return_likelihoods": "NONE",
+      "num_generations": 4
     });
     let configure = {
       method: 'post',
@@ -42,31 +45,20 @@ function Genbet({navigation, route}) {
     console.log(4)
     axios.request(configure)
     .then(response => {
-      console.log(response.data.generations);
-      response.data.generations.forEach((generation, index) => {
-        const textWithinQuotes = generation.text.match(/"([^"]*)"/)[1];
-        console.log(textWithinQuotes);
-        switch (index) {
-          case 0:
-            setQ1(textWithinQuotes);
-            break;
-          case 1:
-            setQ2(textWithinQuotes);
-            break;
-          case 2:
-            setQ3(textWithinQuotes);
-            break;
-          case 3:
-            setQ4(textWithinQuotes);
-            break;
-          default:
-            break;
-        }
-        console.log(23)
-        console.log(q1)
-        console.log(q2)
+      console.log(response.data);
+      const quote1 = response.data.generations[0].text.match(/"([^"]*)"/)[1];
+      setQ1(quote1)
+      const quote2 = response.data.generations[1].text.match(/"([^"]*)"/)[1];
+      setQ2(quote2)
+      const quote3 = response.data.generations[2].text.match(/"([^"]*)"/)[1];
+      setQ3(quote3)
+      const quote4 = response.data.generations[3].text.match(/"([^"]*)"/)[1];
+      setQ4(quote4)
+      console.log(23)
+      console.log(q1)
+      console.log(q2) 
+      setLoading(false)
       })
-    })
     .catch(error => {
       console.log(error);
     }); 
@@ -74,19 +66,11 @@ function Genbet({navigation, route}) {
   
 
   console.log('Start');
-  const [img1, setImg1] = useState(
-    'https://replicate.delivery/pbxt/6bGBeFJbyeneqoLCx0qUisDYyOqYw3JL0RZlCSIuPOkVC2ihA/out-3.png',
-  );
-  const [img2, setImg2] = useState(
-    'https://replicate.delivery/pbxt/1hPc4w7ZY1YcBhx9U48wQzwZf9C6YtiFcv6TovT80H9AOjYIA/out-1.png',
-  );
-  const [img3, setImg3] = useState(
-    'https://replicate.delivery/pbxt/BN58UFehtDXDDaMIWakHOyWOEtHH32gJvOweFIc4G9qJBbxQA/out-1.png',
-  );
-  const [img4, setImg4] = useState(
-    'https://replicate.delivery/pbxt/xJga7PACR4qjMR1cDZ5JIfiYBngxBx2VoNHjCWChEbPBOjYIA/out-3.png',
-  );
-  const [responseReceived, setResponseReceived] = useState(true);
+  const [img1, setImg1] = useState('');
+  const [img2, setImg2] = useState('');
+  const [img3, setImg3] = useState('');
+  const [img4, setImg4] = useState('');
+  const [responseReceived, setResponseReceived] = useState(false);
 
   const handlesreq = async () => {
     if (responseReceived) {
@@ -97,7 +81,7 @@ function Genbet({navigation, route}) {
       maxBodyLength: Infinity,
       url: req,
       headers: { 
-        'Authorization': 'Token 144eeff7bc3fbd1da49fbe0558b823979f603e28'
+        'Authorization': 'Token 28fb05402d0a43cf6e42b8b895e988a20ad8179f'
       }
     };
 
@@ -112,6 +96,7 @@ function Genbet({navigation, route}) {
         setImg4(response.data.output[3]);
         console.log(34 + " " + response.data.output[1])
         setResponseReceived(true);
+        setLoading(false)
       })
       .catch((error) => {
         console.log(error)
@@ -145,7 +130,7 @@ useEffect(() => {
 
 
 return (
-  (q1 === '' || q2 === '' || q3 === '' || q4 === '' ||  img1 === '' || img2 === '' || img3 === '' || img4 === '') ? 
+  (loading === true) ? 
   <View className="h-full">  
     <Appbar.Header style={{backgroundColor: '#1D1D1D'}}>
         <Appbar.BackAction color='white' onPress={() => {navigation.navigate('Create')}}>

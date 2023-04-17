@@ -42,7 +42,7 @@ function Genin({navigation}) {
       maxBodyLength: Infinity,
       url: 'https://api.replicate.com/v1/predictions',
       headers: {
-        Authorization: 'Token 144eeff7bc3fbd1da49fbe0558b823979f603e28',
+        Authorization: 'Token 28fb05402d0a43cf6e42b8b895e988a20ad8179f',
         'Content-Type': 'application/json',
       },
       data: data,

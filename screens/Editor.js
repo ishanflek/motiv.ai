@@ -22,63 +22,23 @@ import Slider from '@react-native-community/slider';
 import ViewShot, {captureRef} from 'react-native-view-shot';
 import storage from '@react-native-firebase/storage';
 import auth from '@react-native-firebase/auth';
-import { white } from 'react-native-paper/lib/typescript/src/styles/themes/v2/colors';
 
 function Editor({route, navigation}) {
   const [text, setText] = useState(route.params.quote);
   const [editing, setEditing] = useState(true);
-  const imgurl = route.params.link
+  const colors = ["red", "blue", "yellow", "lightgreen", "violet", "pink", "orange", "white", "black", "cyan"];
   const fs = Dimensions.get("window").fontScale;
   const pan = useRef(new Animated.ValueXY({ x: Dimensions.get("window").width/2, y: Dimensions.get("window").height/2 })).current;
   const [sliderValue, setSliderValue] = useState(12);
   const viewRef = useRef();
   const [txtcolor, setTxtColor] = useState('#000000');
   const [loading, setLoading] = useState(false);
-  const [hue, setHue] = useState(0);
-
-
-  let isImageUploaded = false;
-  let downloadUrl = ""
-
-  function hsvToRgb(h, s, v) {
-    const c = v * s;
-    const hp = h / 60;
-    const x = c * (1 - Math.abs((hp % 2) - 1));
-    const rgb1 = [c, x, 0];
-    const rgb2 = [x, c, 0];
-    const rgb3 = [0, c, x];
-    const rgb4 = [0, x, c];
-    const rgb5 = [x, 0, c];
-    const rgb6 = [c, 0, x];
-    const segments = [
-      [rgb1, rgb6],
-      [rgb2, rgb1],
-      [rgb3, rgb1],
-      [rgb1, rgb4],
-      [rgb5, rgb1],
-      [rgb1, rgb3],
-    ];
-    const segmentIndex = Math.floor(hp) % 6;
-    const t = (hp % 1) * 2 - 1;
-    const color1 = segments[segmentIndex][0];
-    const color2 = segments[segmentIndex][1];
-    return [
-      (color1[0] + (color2[0] - color1[0]) * t) * 255,
-      (color1[1] + (color2[1] - color1[1]) * t) * 255,
-      (color1[2] + (color2[2] - color1[2]) * t) * 255,
-    ];
+  const [imguploaded, setImageUploaded] = useState(false);
+  const [downloadUrl, setDownloadURL] = useState("")
+ 
+  const handleColorChange = (color) => {
+    setTxtColor(color);
   }
-  
-
-
-  const handleColorChange = (hue) => {
-    setHue(hue);
-    const [r, g, b] = hsvToRgb(hue, 65, 80);
-    setTxtColor(`rgb(${r}, ${g}, ${b})`);
-  };
-  
-
-
 
   const getPermissionAndroid = async () => {
     try {
@@ -107,8 +67,9 @@ function Editor({route, navigation}) {
   };
 
   const shareImage = async () => {
+    console.log(imguploaded)
     try {
-      if (!isImageUploaded) {
+      if (imguploaded === false) {
         Alert.alert('Please upload an image first.');
         return;
       }
@@ -139,7 +100,7 @@ const downloadImage = async () => {
     console.log(uri);
     const currentUser = auth().currentUser;
     const uid = currentUser.uid;
-    const imgName = '1787.png';
+    const imgName = '17.png';
     const reference = storage().ref().child(uid).child(imgName);
     const task = reference.putFile(uri);
     console.log(loading)
@@ -148,8 +109,8 @@ const downloadImage = async () => {
       setLoading(false); 
       reference.getDownloadURL().then((url) => {
         console.log('Download URL:', url);
-        downloadUrl = url
-        isImageUploaded = true
+        setDownloadURL(url)
+        setImageUploaded(true)
       }).catch((e) => console.log('Error getting download URL => ', e));
     }).catch((e) => console.log('uploading image error => ', e));
 
@@ -182,7 +143,7 @@ const downloadImage = async () => {
   return (
     <View style={styles.container}>
     <ViewShot
-      style={{height: "70%"}}
+      style={{height: "80%"}}
       ref={viewRef}
       options={{
         fileName: 'Your-File-Name',
@@ -214,16 +175,22 @@ const downloadImage = async () => {
           <Text style={styles.overlayText}>Uploading Image...</Text>
         </View>
       )}
-    <View style={{height: '30%', backgroundColor: '#000000', padding: 0, margin: 0}}>
+    <View style={{height: '20%', backgroundColor: '#000000', padding: 0, margin: 0}}>
       {editing ? (
         <View style={styles.inputContainer}>
-          <Text style={{color: txtcolor, marginTop: 12}}>Font Size</Text>
+          <Text style={{color: "white", marginTop: 12}}>Font Size</Text>
           <View style={styles.slidercontainer}>
-            <Slider thumbTintColor="white" minimumTrackTintColor="#FFFFFF" maximumTrackTintColor="white" minimumValue={24} maximumValue={60} step={5} stepValue={1} onValueChange={(id) => setSliderValue(id)} sliderValue={sliderValue} />
+            <Slider thumbTintColor="white" minimumTrackTintColor="grey" maximumTrackTintColor="white" minimumValue={24} maximumValue={60} step={5} stepValue={1} onValueChange={(id) => setSliderValue(id)} sliderValue={sliderValue} />
           </View>
-          <Text style={{color: txtcolor, marginTop: 22}}>Font Color</Text>
-          <View style={styles.slidercontainer}>
-             <Slider minimumValue={0} maximumValue={360} step={2} thumbTintColor={hsvToRgb(hue, 95, 20)} minimumTrackTintColor="red" maximumTrackTintColor="blue" onValueChange={handleColorChange}/>
+          <Text style={{color: "white", marginTop: 2, marginBottom: 8}}>Font Color</Text>
+          <View style={styles.containr}>
+            {colors.map((color) => (
+              <TouchableOpacity 
+                key={color} 
+                style={[styles.button, { backgroundColor: color }]}
+                onPress={() => handleColorChange(color)}
+              />
+            ))}
           </View>
           <TextInput
             style={styles.input}
@@ -295,7 +262,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     paddingHorizontal: 10,
     marginBottom: 0, // add this to reduce the gap
-    padding: 0, margin: 1
+    padding: 0,
+    margin: 2
   },
   input: {
     fontSize: 18,
@@ -305,25 +273,27 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderWidth: 2,
     borderColor: 'white',
-    marginTop: 45
+    marginTop: 35
   },
-
-  slidercontainer: {
-    flex: 1,
-    color: 'white',
-    marginBottom: 15
-  },
+  
   title: {
     fontSize: 24,
     fontWeight: 'bold',
   },
-  tag: {
-    fontSize: 14,
-    paddingVertical: 10,
-  },
   slider: {
     borderRadius: 50,
-  }
+  },
+  containr: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    marginTop: 0,
+  },
+  button: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+  },
 });
 
 export default Editor;
