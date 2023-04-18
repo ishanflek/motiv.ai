@@ -11,7 +11,8 @@ function Genbet({navigation, route}) {
   const fs = Dimensions.get('window').fontScale;
   let req = route.params.getreq;
   let ttt = route.params.tes;
-  const prt = "From all the quotes that you know give me four quotes related to the topic of \"" + ttt + "\""
+  let textquote = route.params.texty
+  const prt = "From all the quotes that you know give me four quotes related to the topic of \"" + textquote + "\""
   const [q1, setQ1] = useState("");
   const [q2, setQ2] = useState("");
   const [q3, setQ3] = useState("");
@@ -130,7 +131,7 @@ useEffect(() => {
 
 
 return (
-  (loading === true) ? 
+  (loading === true && img1 === "") ? 
   <View className="h-full">  
     <Appbar.Header style={{backgroundColor: '#1D1D1D'}}>
         <Appbar.BackAction color='white' onPress={() => {navigation.navigate('Create')}}>

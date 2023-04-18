@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Text, View, Image, Dimensions, FlatList } from 'react-native';
+import { Text, View, Image, Dimensions, FlatList, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import storage from '@react-native-firebase/storage';
 import auth from '@react-native-firebase/auth';
@@ -56,7 +56,8 @@ function Genout({ navigation }) {
             data={sampleImages}
             numColumns={2}
             renderItem={({item}) => (
-              <View style={{padding: 8, width: "48%", height: 280}}>
+              <View style={{padding: 10, width: "48%", height: 280}}>
+                <TouchableOpacity onPress={() => navigation.navigate('prew', {imgurl: item.uri})}>
                 <Image
                   style={{
                     width: '100%',
@@ -66,7 +67,8 @@ function Genout({ navigation }) {
                   source={{uri: item}}
                   resizeMode="cover"
                 />
-                </View>
+                </TouchableOpacity>
+              </View>
             )}
           />
         </View>
@@ -76,3 +78,17 @@ function Genout({ navigation }) {
 }
 
 export default Genout;
+
+const styles = StyleSheet.create({
+  button: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop: 10,
+    marginTop: 10,
+  },
+  image: {
+    height: Dimensions.get("window").width*0.6,
+    width: Dimensions.get("window").width*0.4,
+    margin: 5
+  },
+});

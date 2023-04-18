@@ -53,6 +53,7 @@ function Genin({navigation}) {
       getreq: response.data.urls.get,
       //getreq: {},
       tes: pr,
+      texty: text
     });
   };
 

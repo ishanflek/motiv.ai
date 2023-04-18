@@ -52,14 +52,14 @@ function Editor({route, navigation}) {
         },
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        Alert.alert(
+          '',
+          'Your permission is required to save images to your device',
+          [{text: 'OK', onPress: () => {}}],
+          {cancelable: false},
+        );
         return true;
       }
-      Alert.alert(
-        '',
-        'Your permission is required to save images to your device',
-        [{text: 'OK', onPress: () => {}}],
-        {cancelable: false},
-      );
     } catch (err) {
       // handle error as you please
       console.log('err', err);
@@ -100,7 +100,7 @@ const downloadImage = async () => {
     console.log(uri);
     const currentUser = auth().currentUser;
     const uid = currentUser.uid;
-    const imgName = '17.png';
+    const imgName = Math.floor(Date.now() / 1000) + ".png";
     const reference = storage().ref().child(uid).child(imgName);
     const task = reference.putFile(uri);
     console.log(loading)

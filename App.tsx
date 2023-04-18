@@ -19,10 +19,9 @@ import Genin from './screens/Genin';
 import Genbet from './screens/Genbet';
 import First from './screens/First';
 import Editor from './screens/Editor';
+import Preview from './screens/Preview'
 
 import auth from '@react-native-firebase/auth';
-
-import CustomIcon from './screens/CustomIcon';
 /*
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -229,6 +228,7 @@ function App(): JSX.Element {
           <Stack.Screen name="edit" component={Editor} />
           <Stack.Screen name="genbet" component={Genbet} />
           <Stack.Screen name="nns" component={Newname} />
+          <Stack.Screen name="prew" component={Preview} />
         </Stack.Navigator>
       </NavigationContainer>
     </PaperProvider>
