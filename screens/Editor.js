@@ -148,7 +148,7 @@ const downloadImage = async () => {
       options={{
         fileName: 'Your-File-Name',
         format: 'jpg',
-        quality: 0.9,
+        quality: 0.6,
       }}>
       <View style={{width: '100%', height: '100%'}}>
         <ImageBackground source={{uri: route.params.image_url}}>
@@ -192,14 +192,21 @@ const downloadImage = async () => {
               />
             ))}
           </View>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter Quote here"
-            placeholderTextColor="gray"
-            onChangeText={setText}
-            onSubmitEditing={handleInputSubmit}
-            value={text}
-          />
+          <View style={{flexDirection: 'row'}}>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter Quote here"
+              placeholderTextColor="gray"
+              onChangeText={setText}
+              value={text}
+            />
+            <TouchableOpacity
+              style={styles.doneButton}
+              onPress={handleInputSubmit}
+            >
+              <Text style={{ color: 'white' }}>Done</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       ) : (
         <View className="flex flex-row justify-around items-center">
@@ -225,6 +232,16 @@ const downloadImage = async () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  doneButton: {
+    backgroundColor: 'darkgrey',
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: 10,
+    marginTop: 30,
+    width: "20%",
+    height: "60%"
   },
   overlay: {
     position: 'absolute',
@@ -268,7 +285,7 @@ const styles = StyleSheet.create({
   input: {
     fontSize: 18,
     color: 'white',
-    width: '100%',
+    width: '80%',
     paddingHorizontal: 12,
     paddingVertical: 12,
     borderWidth: 2,

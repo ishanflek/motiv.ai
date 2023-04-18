@@ -58,7 +58,6 @@ function Genbet({navigation, route}) {
       console.log(23)
       console.log(q1)
       console.log(q2) 
-      setLoading(false)
       })
     .catch(error => {
       console.log(error);
@@ -131,7 +130,7 @@ useEffect(() => {
 
 
 return (
-  (loading === true && img1 === "") ? 
+  (loading === true && img1 === "" && img2 === "" && img3 === "" && img4 === "") ? 
   <View className="h-full">  
     <Appbar.Header style={{backgroundColor: '#1D1D1D'}}>
         <Appbar.BackAction color='white' onPress={() => {navigation.navigate('Create')}}>
@@ -156,6 +155,7 @@ return (
       <View className="overflow-hidden bg-stone-900 flex flex-col items-center justify-start" style={{paddingLeft: 21, paddingRight: 27, paddingBottom: 34}}>
         <Text className="text-white-0 text-left " style={{fontSize: 12 / fs, marginTop: 30}}>Showing results for "{ttt}"</Text>
         <View className="overflow-hidden bg-stone-900 flex flex-col items-center justify-start" style={{paddingLeft: 21, paddingRight: 27, paddingTop: 26}}>
+        <Text className="text-white-0 text-left " style={{fontSize: 22 / fs, marginTop: 20, marginBottom: 10}}>Select a quote first</Text>
           <FlatList
             data={[q1, q2, q3, q4]}
             keyExtractor={(item, index) => index.toString()}
@@ -213,7 +213,8 @@ const styles = StyleSheet.create({
   loadingText: {
     marginTop: 20,
     fontSize: 18,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    color: "white"
   },
   spinner: {
     marginTop: 20

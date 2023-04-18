@@ -1,17 +1,17 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { Text, View, Image, TouchableOpacity, Dimensions, StyleSheet } from 'react-native';
-import { Appbar, Button, TextInput, Avatar, ProgressBar } from 'react-native-paper';
+import { Appbar} from 'react-native-paper';
 
 const fs = Dimensions.get('window').fontScale; 
+const { height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 function Pref({navigation}) {
   return (
       <View>
         <Appbar.Header style={{ backgroundColor: '#1D1D1D', width: '100%'}}>
-          <Appbar.BackAction color='white' onPress={() => {navigation.navigate('main')}}>
-          </Appbar.BackAction>
-          <Appbar.Content title='Preferences' color='white'>
-          </Appbar.Content>
+          <Appbar.BackAction color='white' onPress={() => {navigation.navigate('main');}} />
+          <Appbar.Content title='Preferences' color='white' />
         </Appbar.Header>
         <View className='h-full bg-stone-900' style={{}}>
           <View>
@@ -40,7 +40,7 @@ function Pref({navigation}) {
             </View>
           </TouchableOpacity>
           </View> 
-          <View style={{marginLeft: 150, marginTop: 360}}>
+          <View style={{marginLeft: 150, marginTop: height/2.4}}>
               <Text className='text-neutral-400' style={{ alignContent: 'center', fontSize: 11 / fs}}>App made with</Text>
               <Image style={{marginTop: 4, marginLeft: 6}} source={require('../assets/247_2038.png')} alt=''></Image>
           </View>

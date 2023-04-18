@@ -9,6 +9,8 @@ function Genout({ navigation }) {
   const fs = Dimensions.get('window').fontScale;
   const [sampleImages, setSampleImages] = useState([]);
   const [folders, setFolders] = useState([]);
+  const { height } = Dimensions.get('window');
+  const { width } = Dimensions.get('window');
 
   const getSampleImages = async () => {
     const cu = auth().currentUser;
@@ -34,30 +36,30 @@ function Genout({ navigation }) {
   }, []);
 
   return (
-    <View className="bg-stone-900 h-full" style={{ paddingTop: 80 }}>
+    <View className="h-full" style={{ backgroundColor: "#1c1c1cff", paddingTop:  height / 15 }}>
       <ScrollView style={{ height: '100%' }}>
         <TouchableOpacity onPress={() => navigation.navigate('pref')}>
-          <Image source={require('../assets/finset.png')} style={{ marginBottom: 40, marginLeft: 330 }} />
+          <Image source={require('../assets/finset.png')} style={{ marginBottom: height / 30, marginLeft: width*0.85}} />
         </TouchableOpacity>
         <View className="bg-stone-900 h-full" style={{ height: '100%' }}>
-          <Text className="text-white-0 text-center" style={{ fontSize: 36 / fs }}>
+          <Text className="text-white-0 text-center" style={{color: "white" ,textAlign: "center", fontSize: 36 / fs }}>
           {folders.length > 0 ? `👋 ${folders[0]}` : null}
           </Text>
-          <Text className="text-white-0 text-center" style={{ marginTop: 8, fontSize: 12 / fs }}>
+          <Text className="text-white-0 text-center" style={{ color: "white" ,textAlign: "center", marginTop: height/50, fontSize: 12 / fs }}>
             4 motivs
           </Text>
           <Text
             className="text-white-0 text-left"
-            style={{ paddingLeft: 40, marginTop: 48, marginBottom: 35, fontSize: 14 / fs }}>
+            style={{ color: "white", textAlign: "left", paddingLeft: width*0.05, marginTop: height/19, marginBottom: height/40, fontSize: 14 / fs }}>
             Your Motives
           </Text>
           <FlatList
-            columnWrapperStyle={{justifyContent: 'space-between'}}
+          style={{marginLeft: width*0.02}}
             data={sampleImages}
             numColumns={2}
             renderItem={({item}) => (
-              <View style={{padding: 10, width: "48%", height: 280}}>
-                <TouchableOpacity onPress={() => navigation.navigate('prew', {imgurl: item.uri})}>
+              <View style={{padding: width*0.02, width: "49%", height: height/3.5}}>
+                <TouchableOpacity onPress={() => navigation.navigate('prew', {imgurl: item})}>
                 <Image
                   style={{
                     width: '100%',
@@ -83,12 +85,9 @@ const styles = StyleSheet.create({
   button: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingTop: 10,
-    marginTop: 10,
   },
   image: {
     height: Dimensions.get("window").width*0.6,
     width: Dimensions.get("window").width*0.4,
-    margin: 5
   },
 });

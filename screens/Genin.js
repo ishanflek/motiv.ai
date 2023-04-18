@@ -34,6 +34,7 @@ function Genin({navigation}) {
       input: {
         prompt: pr,
         num_outputs: 4,
+        image_dimensions: "512x512"
       },
     });
 
@@ -67,14 +68,9 @@ function Genin({navigation}) {
   return (
     <View
       className=" flex bg-stone-900 justify-center w-full"
-      style={{paddingTop: 50}}>
-      <Appbar.Header style={{backgroundColor: '#1D1D1D'}}>
-        <Appbar.BackAction
-          color="white"
-          onPress={() => {
-            navigation.navigate('home');
-          }}></Appbar.BackAction>
-        <Appbar.Content color="white" title="Create"></Appbar.Content>
+      style={{paddingTop: 20}}>
+      <Appbar.Header  style={{backgroundColor: '#1D1D1D'}}>
+        <Appbar.Content classname="text-center" color="white" title="Create"></Appbar.Content>
       </Appbar.Header>
       <View
         className="overflow-hidden bg-stone-900 flex flex-col items-start justify-between w-full"
