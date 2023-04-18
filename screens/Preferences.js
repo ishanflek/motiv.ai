@@ -10,8 +10,10 @@ function Pref({navigation}) {
   return (
       <View>
         <Appbar.Header style={{ backgroundColor: '#1D1D1D', width: '100%'}}>
-          <Appbar.BackAction color='white' onPress={() => {navigation.navigate('main');}} />
-          <Appbar.Content title='Preferences' color='white' />
+          <TouchableOpacity onPress={() => {navigation.navigate('main')}}>
+            <Image style={{marginLeft: width*0.01}} source={require("../assets/Frame.png")} alt=""></Image>
+          </TouchableOpacity>
+          <Appbar.Content className="items-center" title='Preferences' color='white' />
         </Appbar.Header>
         <View className='h-full bg-stone-900' style={{}}>
           <View>

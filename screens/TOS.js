@@ -1,17 +1,18 @@
 import { NavigationContainer } from '@react-navigation/native';
-import { Text, View, Image, ScrollView, Dimensions } from 'react-native';
+import { Text, View, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { Appbar, Button, TextInput, Avatar, ProgressBar } from 'react-native-paper';
 
 function ToS({navigation}) {
   const fs = Dimensions.get("window").fontScale;
+  const { width } = Dimensions.get('window');
 
   return (
       <View className="bg-stone-900">
-        <Appbar.Header style={{ backgroundColor: '#1D1D1D', width: '100%'}}>
-          <Appbar.BackAction color='white' onPress={() => {navigation.navigate('pref')}}>
-          </Appbar.BackAction>
-          <Appbar.Content title='Terms of Use' color='white'>
-          </Appbar.Content>
+         <Appbar.Header style={{ backgroundColor: '#1D1D1D', width: '100%'}}>
+          <TouchableOpacity onPress={() => {navigation.navigate('pref')}}>
+            <Image style={{marginLeft: width*0.01}} source={require("../assets/Frame.png")} alt=""></Image>
+          </TouchableOpacity>
+          <Appbar.Content className="items-center" title='Terms of Service' color='white' />
         </Appbar.Header>
           <View className="flex flex-col items-start justify-between w-full" style={{paddingLeft: 24, paddingRight: 23, paddingTop: 36, paddingBottom: 257}}>
             <Text className="text-white-0 text-left" style={{fontSize: 22 / fs}}>Clause 1</Text>

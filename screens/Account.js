@@ -6,6 +6,8 @@ import storage from '@react-native-firebase/storage';
 
 function Acc({navigation}) {
   const fs = Dimensions.get("window").fontScale;
+  const { width } = Dimensions.get('window');
+
   const [folders, setFolders] = useState([]);
   const [number, setNumber] = useState('')
 
@@ -38,9 +40,11 @@ function Acc({navigation}) {
 
   return (
       <View className="bg-stone-900">
-        <Appbar.Header style={{ backgroundColor: '#1D1D1D', width: '100%'}}>
-          <Appbar.BackAction color='white' onPress={() => {navigation.navigate('pref');}} />
-          <Appbar.Content title='Account' color='white' />
+         <Appbar.Header style={{ backgroundColor: '#1D1D1D', width: '100%'}}>
+          <TouchableOpacity onPress={() => {navigation.navigate('pref')}}>
+            <Image style={{marginLeft: width*0.01}} source={require("../assets/Frame.png")} alt=""></Image>
+          </TouchableOpacity>
+          <Appbar.Content className="items-center" title='Account' color='white' />
         </Appbar.Header>
           <View className="flex flex-col items-start justify-between w-full" style={{paddingLeft: 28, paddingRight: 20, paddingTop: 37, paddingBottom: 542, borderRadius: 14}}>
           <View className="items-center w-full">
