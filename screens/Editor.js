@@ -21,20 +21,37 @@ import Slider from '@react-native-community/slider';
 
 import ViewShot, {captureRef} from 'react-native-view-shot';
 import storage from '@react-native-firebase/storage';
+import { PinchGestureHandler, State } from 'react-native-gesture-handler';
 import auth from '@react-native-firebase/auth';
 
 function Editor({route, navigation}) {
   const [text, setText] = useState(route.params.quote);
-  const [editing, setEditing] = useState(true);
+  const [editing, setEditing] = useState(false);
   const colors = ["red", "blue", "yellow", "lightgreen", "violet", "pink", "orange", "white", "black", "cyan"];
   const fs = Dimensions.get("window").fontScale;
   const pan = useRef(new Animated.ValueXY({ x: Dimensions.get("window").width/2, y: Dimensions.get("window").height/2 })).current;
-  const [sliderValue, setSliderValue] = useState(12);
+  const [sliderValue, setSliderValue] = useState(16);
+  const [scale, setScale] = useState(1);
   const viewRef = useRef();
   const [txtcolor, setTxtColor] = useState('#000000');
   const [loading, setLoading] = useState(false);
   const [imguploaded, setImageUploaded] = useState(false);
   const [downloadUrl, setDownloadURL] = useState("")
+
+  const onPinchGestureEvent = Animated.event(
+    [
+      {
+        nativeEvent: { scale: scale },
+      },
+    ],
+    { useNativeDriver: true }
+  );
+
+  const onPinchHandlerStateChange = (event) => {
+    if (event.nativeEvent.oldState === State.ACTIVE) {
+      setScale(scale * event.nativeEvent.scale);
+    }
+  };
  
   const handleColorChange = (color) => {
     setTxtColor(color);
@@ -153,18 +170,23 @@ const downloadImage = async () => {
       <View style={{width: '100%', height: '100%'}}>
         <ImageBackground source={{uri: route.params.image_url}}>
           <View style={{height: "100%"}}>
-            <Animated.Text
-              style={[
-                styles.draggableText,
-                {fontSize: sliderValue},
-                {color: txtcolor},
-                {
-                  transform: [{translateX: pan.x}, {translateY: pan.y}],
-                },
-              ]}
-              {...panResponder.panHandlers}>
-              {text}
-            </Animated.Text>
+          <PinchGestureHandler
+              onGestureEvent={onPinchGestureEvent}
+              onHandlerStateChange={onPinchHandlerStateChange}>
+              <Animated.Text
+                onPress={handleEdit}
+                style={[
+                  styles.draggableText,
+                  { fontSize: sliderValue * scale },
+                  { color: txtcolor },
+                  {
+                    transform: [{ translateX: pan.x }, { translateY: pan.y }],
+                  },
+                ]}
+                {...panResponder.panHandlers}>
+                {text}
+              </Animated.Text>
+            </PinchGestureHandler>
           </View>
         </ImageBackground>
       </View>
