@@ -146,12 +146,12 @@ return (
   </View>
   :
   <View className="h-full">  
-    <Appbar.Header style={{backgroundColor: '#1D1D1D'}}>
-      <Appbar.BackAction color='white' onPress={() => {navigation.navigate('Create')}}>
-      </Appbar.BackAction>
-      <Appbar.Content color="white" title="Prompt Results">
-      </Appbar.Content>
-    </Appbar.Header>
+        <Appbar.Header style={{ backgroundColor: '#1D1D1D', width: '100%'}}>
+          <TouchableOpacity onPress={() => {navigation.navigate('Create')}}>
+            <Image style={{marginLeft: width*0.01}} source={require("../assets/Frame.png")} alt=""></Image>
+          </TouchableOpacity>
+          <Appbar.Content className="items-center" title='Prompt Results' color='white' />
+        </Appbar.Header>
     <ScrollView style={{ flex: 1 }}>
       <View className="overflow-hidden bg-stone-900 flex flex-col items-center justify-start" style={{paddingLeft: 21, paddingRight: 27, paddingBottom: 34}}>
         <Text className="text-white-0 text-left " style={{fontSize: 12 / fs, marginTop: 30}}>Showing results for "{ttt}"</Text>
