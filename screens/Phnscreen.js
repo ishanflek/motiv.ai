@@ -6,14 +6,17 @@ import auth from '@react-native-firebase/auth';
 function Phnscreen({ navigation }) {
   const [phn, setPhn] = useState('');
   const [confirmationResult, setConfirmationResult] = useState(null);
+  const [pressed, setPressed] = useState(false)
   const [code, setCode] = useState('');
   const fs = Dimensions.get("window").fontScale;
+  const { height,width } = Dimensions.get('window');
 
   // Handle the button press to send the OTP
   async function sendOTP() {
+
+    setPressed(true)
     console.log(phn)
     console.log(confirmation)
-    Alert.alert("Sending OTP, wait till OTP arrives")
     const confirmation = await auth().signInWithPhoneNumber("+91" + phn);
     setConfirmationResult(confirmation);
   }
@@ -55,18 +58,18 @@ function Phnscreen({ navigation }) {
 */}
 
   return (
-    <View className="overflow-hidden bg-stone-900 h-full flex flex-col justify-between w-full" style={{ paddingLeft: 22, paddingRight: 24, paddingTop: 60, paddingBottom: 454 }}>
-      {!confirmationResult ?
+    <View className="overflow-hidden bg-stone-900 h-full flex flex-col justify-between w-full" style={{ paddingLeft: width*0.07, paddingRight: width*0.08, paddingTop: height/9, paddingBottom: height/1.8}}>
+      {!pressed ?
         <>
-          <Text className="shrink text-neutral-300 text-left" style={{ paddingTop: 10, fontSize: 36 / fs }}>Great to see you today!</Text>
-          <TextInput className="w-full" style={{ marginTop: 55 }} value={phn} onChangeText={(value) => { setPhn(value) }} label="Phone Number" mode="flat"></TextInput>
-          <Button className="w-full" style={{ marginTop: 21 }} onPress={sendOTP} mode="contained" labelStyle={{ "padding": 5 }}>Next</Button>
+          <Text className="shrink text-neutral-300 text-left" style={{ paddingTop: height/96, fontSize: 36 / fs }}>Great to see you today!</Text>
+          <TextInput className="w-full" style={{ marginTop: height/21 }} value={phn} onChangeText={(value) => { setPhn(value) }} label="Phone Number" mode="flat"></TextInput>
+          <Button className="w-full" style={{ marginTop: height/21 }} onPress={sendOTP} mode="contained" labelStyle={{ "padding": 5 }}>Next</Button>
         </>
         :
         <>
-          <Text className="shrink text-neutral-300 text-left" style={{ paddingTop: 10, fontSize: 36 / fs }}>Code{'\n'}Confirmation</Text>
-          <TextInput onChangeText={(value) => { setCode(value) }} className="w-full" style={{ marginTop: 55 }} label="Enter OTP" mode="flat"></TextInput>
-          <Button className="w-full" style={{ marginTop: 21 }} onPress={confirmCode} mode="contained" labelStyle={{ "padding": 5 }}>Next</Button>
+          <Text className="shrink text-neutral-300 text-left" style={{ paddingTop: height/96, fontSize: 36 / fs }}>Code{'\n'}Confirmation</Text>
+          <TextInput onChangeText={(value) => { setCode(value) }} className="w-full" style={{ marginTop: height/21 }} label="Enter OTP" mode="flat"></TextInput>
+          <Button className="w-full" style={{ marginTop: height/21 }} onPress={confirmCode} mode="contained" labelStyle={{ "padding": 5 }}>Next</Button>
         </>
       }
     </View>

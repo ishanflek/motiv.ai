@@ -12,11 +12,11 @@ function Genbet({navigation, route}) {
   let req = route.params.getreq;
   let ttt = route.params.tes;
   let textquote = route.params.texty
-  const prt = "From all the quotes that you know give me four quotes related to the topic of \"" + textquote + "\""
-  const [q1, setQ1] = useState("");
-  const [q2, setQ2] = useState("");
-  const [q3, setQ3] = useState("");
-  const [q4, setQ4] = useState("");
+  //const prt = "From all the quotes that you know give me four quotes related to the topic of \"" + textquote + "\""
+  const [q1, setQ1] = useState("When you have a dream, you've got to grab it and never let go.");
+  const [q2, setQ2] = useState("Nothing is impossible. The word itself says 'I'm possible!'");
+  const [q3, setQ3] = useState("The bad news is time flies. The good news is you're the pilot.");
+  const [q4, setQ4] = useState("Keep your face always toward the sunshine, and shadows will fall behind you.");
   const [loading,setLoading] = useState(false)
   const [selectedQuote, setSelectedQuote] = useState(null);
 
@@ -73,6 +73,7 @@ function Genbet({navigation, route}) {
   const [responseReceived, setResponseReceived] = useState(false);
 
   const handlesreq = async () => {
+    setLoading(true)
     if (responseReceived) {
       return;
     }
@@ -117,20 +118,20 @@ useEffect(() => {
 
 
   useEffect(() => {
-  }, [img1, img2, img3, img4, q1, q2, q3, q4]);
+  }, [img1, img2, img3, img4]);
 
-  useEffect(() => {
+  {/*useEffect(() => {
     try {
       handlequote();
     } catch (error) {
       console.error(error);
     }
-  }, []);
+  }, []);*/}
 
 
 
 return (
-  (loading === true && img1 === "" && img2 === "" && img3 === "" && img4 === "") ? 
+  (img1 === "" && img2 === "" && img3 === "" && img4 === "") ? 
   <View className="h-full">  
     <Appbar.Header style={{backgroundColor: '#1D1D1D'}}>
         <Appbar.BackAction color='white' onPress={() => {navigation.navigate('Create')}}>

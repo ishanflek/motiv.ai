@@ -24,20 +24,19 @@ function Home({navigation}) {
   }, []);
 
   return (
-    <View className="bg-stone-900">
-      <ScrollView showVerticalScrollIndicator={false}>
-        <View className="bg-stone-900 relative" style={{width: '100%', paddingTop: 50}}>
-          <View className="flex flex-col items-start justify-between w-full" style={{width: '100%', marginTop: 70}}>
-              <View style={{flexDirection: 'row'}}>
-              <Image style={{marginRight: 15, marginTop: 20}} source={require("../assets/247_1993.png")} alt=""></Image>
-              <Text className="text-neutral-201 text-left" style={{ color: 'white', marginTop: 30, marginBottom: 13, fontSize: 33 / fs}}>Motiv.ai</Text>
+    <View className="bg-stone-900" style={{backgroundColor: "#1c1c1cff"}}>
+      <ScrollView style={{ height: '100%' }}>
+        <View className="bg-stone-900 relative" style={{width: '100%', paddingTop: height/90}}>
+          <View className="bg-stone-900 flex flex-col justify-between w-full" style={{width: '100%', marginTop: height/ 10}}>
+              <View style={{flexDirection: 'row', marginLeft: width*0.2,}}>
+              <Image style={{marginRight: width*0.02, marginTop: height/42}} source={require("../assets/247_1993.png")} alt=""></Image>
+              <Text className="text-neutral-201 text-left" style={{ color: 'white', marginTop: height/25, marginBottom: height/52, fontSize: 33 / fs}}>Motiv.ai</Text>
               </View>
             <View className="flex flex-row items-center justify-between w-full">
-              <Text className="text-white text-left" style={{padding: 15, marginRight: 220, marginTop: 40, marginBottom: 2, fontSize: 14 / fs, color: 'white'}}>Recents</Text>
-              <Image style={{marginTop: 30}}source={require("../assets/238_6397.png")} alt=""></Image>
+              <Text className="text-white text-left" style={{padding: 15, marginTop: height/42, marginBottom: 2, fontSize: 14 / fs, color: 'white'}}>Recents</Text>
             </View>
             <FlatList
-          style={{marginLeft: width*0.02}}
+          style={{marginLeft: width*0.02, backgroundColor: "#1c1c1cff"}}
             data={sampleImages}
             numColumns={2}
             renderItem={({item}) => (

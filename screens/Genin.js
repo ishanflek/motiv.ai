@@ -22,6 +22,7 @@ import axios from 'axios';
 function Genin({navigation}) {
   const fs = Dimensions.get('window').fontScale;
   const [selectedButton, setSelectedButton] = useState('');
+  const { height,width } = Dimensions.get('window');
 
   const [style, setStyle] = useState('');
   const [text, setText] = useState('');
@@ -68,13 +69,13 @@ function Genin({navigation}) {
   return (
     <View
       className=" flex bg-stone-900 justify-center w-full"
-      style={{paddingTop: 20}}>
+      style={{paddingTop: height/40}}>
       <Appbar.Header  style={{backgroundColor: '#1D1D1D'}}>
         <Appbar.Content classname="text-center" color="white" title="Create"></Appbar.Content>
       </Appbar.Header>
       <View
         className="overflow-hidden bg-stone-900 flex flex-col items-start justify-between w-full"
-        style={{paddingLeft: 24, paddingRight: 22, paddingBottom: 42}}>
+        style={{paddingLeft: width*0.04, paddingRight: 22, paddingBottom: 42}}>
         <Text
           className="shrink text-white-0 text-left"
           style={{fontSize: 12 / fs}}>
