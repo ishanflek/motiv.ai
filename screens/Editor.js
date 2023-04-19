@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useCallback} from 'react';
 import {
   View,
   Image,
@@ -27,16 +27,17 @@ import auth from '@react-native-firebase/auth';
 function Editor({route, navigation}) {
   const [text, setText] = useState(route.params.quote);
   const [editing, setEditing] = useState(false);
-  const colors = ["red", "blue", "yellow", "lightgreen", "violet", "pink", "orange", "white", "black", "cyan"];
   const fs = Dimensions.get("window").fontScale;
   const pan = useRef(new Animated.ValueXY({ x: Dimensions.get("window").width/2, y: Dimensions.get("window").height/2 })).current;
   const [sliderValue, setSliderValue] = useState(16);
   const [scale, setScale] = useState(1);
   const viewRef = useRef();
-  const [txtcolor, setTxtColor] = useState('#000000');
   const [loading, setLoading] = useState(false);
   const [imguploaded, setImageUploaded] = useState(false);
   const [downloadUrl, setDownloadURL] = useState("")
+  const colors = ['#FF5733', '#FFC300', '#DAF7A6', '#C70039', '#900C3F', '#581845', '#4CAF50', '#2196F3', '#9C27B0', '#F44336'];
+  const [txtcolor, setTxtColor] = useState(colors[0]);
+
 
   const onPinchGestureEvent = Animated.event(
     [
@@ -53,9 +54,11 @@ function Editor({route, navigation}) {
     }
   };
  
-  const handleColorChange = (color) => {
-    setTxtColor(color);
-  }
+  const handlePress = useCallback(() => {
+    const currentIndex = colors.indexOf(txtcolor);
+    const nextIndex = (currentIndex + 1) % colors.length;
+    setTxtColor(colors[nextIndex]);
+  }, [txtcolor]);
 
   const getPermissionAndroid = async () => {
     try {
@@ -174,7 +177,7 @@ const downloadImage = async () => {
               onGestureEvent={onPinchGestureEvent}
               onHandlerStateChange={onPinchHandlerStateChange}>
               <Animated.Text
-                onPress={handleEdit}
+                onPress={handlePress}
                 style={[
                   styles.draggableText,
                   { fontSize: sliderValue * scale },
@@ -198,41 +201,8 @@ const downloadImage = async () => {
         </View>
       )}
     <View style={{height: '20%', backgroundColor: '#000000', padding: 0, margin: 0}}>
-      {editing ? (
-        <View style={styles.inputContainer}>
-          <Text style={{color: "white", marginTop: 12}}>Font Size</Text>
-          <View style={styles.slidercontainer}>
-            <Slider thumbTintColor="white" minimumTrackTintColor="grey" maximumTrackTintColor="white" minimumValue={24} maximumValue={60} step={5} stepValue={1} onValueChange={(id) => setSliderValue(id)} sliderValue={sliderValue} />
-          </View>
-          <Text style={{color: "white", marginTop: 2, marginBottom: 8}}>Font Color</Text>
-          <View style={styles.containr}>
-            {colors.map((color) => (
-              <TouchableOpacity 
-                key={color} 
-                style={[styles.button, { backgroundColor: color }]}
-                onPress={() => handleColorChange(color)}
-              />
-            ))}
-          </View>
-          <View style={{flexDirection: 'row'}}>
-            <TextInput
-              style={styles.input}
-              placeholder="Enter Quote here"
-              placeholderTextColor="gray"
-              onChangeText={setText}
-              value={text}
-            />
-            <TouchableOpacity
-              style={styles.doneButton}
-              onPress={handleInputSubmit}
-            >
-              <Text style={{ color: 'white' }}>Done</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      ) : (
         <View className="flex flex-row justify-around items-center">
-          <TouchableOpacity className="bg-[#141519] rounded-lg w-24 flex flex-col items-center p-2" onPress={handleEdit}>
+          <TouchableOpacity className="bg-[#141519] rounded-lg w-24 flex flex-col items-center p-2">
             <Image source={require('../assets/edit.png')} />
             <Text style={{color: 'white'}}>Edit</Text>
           </TouchableOpacity>
@@ -245,7 +215,6 @@ const downloadImage = async () => {
             <Text style={{color: 'white'}}>Share</Text>
           </TouchableOpacity>
         </View>
-      )}
     </View>
   </View>  
   );
