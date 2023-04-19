@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {Image, StyleSheet, Text, View, Linking} from 'react-native';
+import {Image, StyleSheet, Text, View} from 'react-native';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {Provider as PaperProvider, useTheme, BottomNavigation} from 'react-native-paper';
+import {Provider as PaperProvider} from 'react-native-paper';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 
 import Phnscreen from './screens/Phnscreen';

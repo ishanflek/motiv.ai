@@ -9,6 +9,7 @@ function Genout({ navigation }) {
   const fs = Dimensions.get('window').fontScale;
   const [sampleImages, setSampleImages] = useState([]);
   const [folders, setFolders] = useState([]);
+  const [countmotiv, setCountMotiv] = useState(0)
   const { height } = Dimensions.get('window');
   const { width } = Dimensions.get('window');
 
@@ -18,6 +19,7 @@ function Genout({ navigation }) {
     const imageRefs = await storage().ref().child(`${uuid}/`).listAll();
     const urls = await Promise.all(imageRefs.items.map((ref) => ref.getDownloadURL()));
     setSampleImages(urls);
+    setCountMotiv(imageRefs.items.length);
   };
 
   const listFolders = async () => {
@@ -46,7 +48,7 @@ function Genout({ navigation }) {
           {folders.length > 0 ? `👋 ${folders[0]}` : null}
           </Text>
           <Text className="text-white-0 text-center" style={{ color: "white" ,textAlign: "center", marginTop: height/50, fontSize: 12 / fs }}>
-            4 motivs
+          {countmotiv > 0 ? `${countmotiv}` : 0} motivs
           </Text>
           <Text
             className="text-white-0 text-left"

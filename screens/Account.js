@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Text, View, Image, TouchableOpacity, Dimensions } from 'react-native';
-import { Appbar, Button, TextInput, Avatar, ProgressBar } from 'react-native-paper';
+import { Appbar} from 'react-native-paper';
 import auth from '@react-native-firebase/auth';
 import storage from '@react-native-firebase/storage';
 

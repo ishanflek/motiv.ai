@@ -21,7 +21,7 @@ function Editor({route, navigation}) {
     try 
     {
       await Share.share({
-        message: downloadUrl,
+        message: route.params.imgurl,
       });
     } catch (error) {
       Alert.alert(error.message);

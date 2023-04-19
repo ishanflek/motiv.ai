@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 
 function Genbet({navigation, route}) {
   const fs = Dimensions.get('window').fontScale;
+  const { height,width } = Dimensions.get('window');
   let req = route.params.getreq;
   let ttt = route.params.tes;
   let textquote = route.params.texty
@@ -66,13 +67,13 @@ function Genbet({navigation, route}) {
   
 
   console.log('Start');
-  const [img1, setImg1] = useState('');
-  const [img2, setImg2] = useState('');
+  const [img1, setImg1] = useState('https://images.unsplash.com/photo-1681846291878-1103198eb2d0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=900&q=60');
+  const [img2, setImg2] = useState('https://plus.unsplash.com/premium_photo-1671660015325-51fa397dd40a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80');
   const [img3, setImg3] = useState('');
   const [img4, setImg4] = useState('');
   const [responseReceived, setResponseReceived] = useState(false);
 
-  const handlesreq = async () => {
+  {/*const handlesreq = async () => {
     setLoading(true)
     if (responseReceived) {
       return;
@@ -115,7 +116,7 @@ useEffect(() => {
   }
   return () => clearInterval(interval);
 }, [responseReceived]);
-
+*/}
 
   useEffect(() => {
   }, [img1, img2, img3, img4]);
@@ -129,9 +130,9 @@ useEffect(() => {
   }, []);*/}
 
 
-
+//&& img3 === "" && img4 === ""
 return (
-  (img1 === "" && img2 === "" && img3 === "" && img4 === "") ? 
+  (img1 === "" && img2 === "") ? 
   <View className="h-full">  
     <Appbar.Header style={{backgroundColor: '#1D1D1D'}}>
         <Appbar.BackAction color='white' onPress={() => {navigation.navigate('Create')}}>
