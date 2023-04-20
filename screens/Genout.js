@@ -14,14 +14,23 @@ function Genout({ navigation }) {
   const { width } = Dimensions.get('window');
 
   const getSampleImages = async () => {
-    const cu = auth().currentUser;
-    const uuid = cu.uid;
-    const imageRefs = await storage().ref().child(`${uuid}/`).listAll();
-    const urls = await Promise.all(imageRefs.items.map((ref) => ref.getDownloadURL()));
-    setSampleImages(urls);
-    setCountMotiv(imageRefs.items.length);
+    try {
+      const cu = auth().currentUser;
+      const uuid = cu.uid;
+      const imageRefs = await storage().ref().child(`${uuid}/`).listAll();
+      const urls = await Promise.all(imageRefs.items.map((ref) => ref.getDownloadURL()));
+      setSampleImages(urls);
+      setCountMotiv(imageRefs.items.length);
+    } catch (error) {
+      if (error.code === 'storage/quota-exceeded') {
+        Alert.alert('Storage quota exceeded. Please upgrade your firebase plan and try again.');
+      } else {
+        Alert.alert('An error occurred. Please try again later.');
+      }
+      console.log(error);
+    }
   };
-
+  
   const listFolders = async () => {
     const currentUser = auth().currentUser;
     const uid = currentUser.uid;

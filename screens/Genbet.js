@@ -1,11 +1,11 @@
-import { Text, View, Image, ActivityIndicator, Dimensions, FlatList} from 'react-native';
+import { Text, View, Image, ActivityIndicator, Dimensions, FlatList, TextInput} from 'react-native';
 import { Appbar} from 'react-native-paper';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { StyleSheet } from 'react-native';
 import axios from "axios"
 import { ScrollView } from 'react-native-virtualized-view';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState,memo } from 'react';
 
 function Genbet({navigation, route}) {
   const fs = Dimensions.get('window').fontScale;
@@ -16,10 +16,17 @@ function Genbet({navigation, route}) {
   //const prt = "From all the quotes that you know give me four quotes related to the topic of \"" + textquote + "\""
   const [q1, setQ1] = useState("When you have a dream, you've got to grab it and never let go.");
   const [q2, setQ2] = useState("Nothing is impossible. The word itself says 'I'm possible!'");
-  const [q3, setQ3] = useState("The bad news is time flies. The good news is you're the pilot.");
-  const [q4, setQ4] = useState("Keep your face always toward the sunshine, and shadows will fall behind you.");
   const [loading,setLoading] = useState(false)
   const [selectedQuote, setSelectedQuote] = useState(null);
+  const [userQuote, setUserQuote] = useState('');
+
+  const InputComponent = memo(({ value, onChangeText }) => (
+    <TextInput
+      style={{ backgroundColor: 'white', flex: 1, marginRight: 10, borderRadius: 5, paddingLeft: 10 }}
+      value={value}
+      onChangeText={onChangeText}
+    />
+  ));
 
   const handlequote = async() => {
     console.log("quote")
@@ -67,13 +74,13 @@ function Genbet({navigation, route}) {
   
 
   console.log('Start');
-  const [img1, setImg1] = useState('https://images.unsplash.com/photo-1681846291878-1103198eb2d0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=900&q=60');
-  const [img2, setImg2] = useState('https://plus.unsplash.com/premium_photo-1671660015325-51fa397dd40a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80');
+  const [img1, setImg1] = useState('');
+  const [img2, setImg2] = useState('');
   const [img3, setImg3] = useState('');
   const [img4, setImg4] = useState('');
   const [responseReceived, setResponseReceived] = useState(false);
 
-  {/*const handlesreq = async () => {
+  const handlesreq = async () => {
     setLoading(true)
     if (responseReceived) {
       return;
@@ -116,7 +123,7 @@ useEffect(() => {
   }
   return () => clearInterval(interval);
 }, [responseReceived]);
-*/}
+
 
   useEffect(() => {
   }, [img1, img2, img3, img4]);
@@ -130,15 +137,14 @@ useEffect(() => {
   }, []);*/}
 
 
-//&& img3 === "" && img4 === ""
 return (
-  (img1 === "" && img2 === "") ? 
-  <View className="h-full">  
-    <Appbar.Header style={{backgroundColor: '#1D1D1D'}}>
-        <Appbar.BackAction color='white' onPress={() => {navigation.navigate('Create')}}>
-        </Appbar.BackAction>
-        <Appbar.Content color="white" title="Prompt Results">
-        </Appbar.Content>
+  (img1 === "" && img2 === "" && img3 === "" && img4 === "") ? 
+  <View className="h-full" style={{backgroundColor: '#1D1D1D'}}>  
+    <Appbar.Header style={{ backgroundColor: '#1D1D1D', width: '100%'}}>
+      <TouchableOpacity onPress={() => {navigation.navigate('Create')}}>
+        <Image style={{marginLeft: width*0.01}} source={require("../assets/Frame.png")} alt=""></Image>
+      </TouchableOpacity>
+      <Appbar.Content className="items-center" title='Prompt Results' color='white' />
     </Appbar.Header>
     <View style={styles.loading}>
       <ActivityIndicator size="large" color="white" style={styles.spinner} />
@@ -146,31 +152,16 @@ return (
     </View>
   </View>
   :
-  <View className="h-full">  
-        <Appbar.Header style={{ backgroundColor: '#1D1D1D', width: '100%'}}>
-          <TouchableOpacity onPress={() => {navigation.navigate('Create')}}>
-            <Image style={{marginLeft: width*0.01}} source={require("../assets/Frame.png")} alt=""></Image>
-          </TouchableOpacity>
-          <Appbar.Content className="items-center" title='Prompt Results' color='white' />
-        </Appbar.Header>
+  <View className="h-full" style={{backgroundColor: '#1D1D1D'}}>  
+    <Appbar.Header style={{ backgroundColor: '#1D1D1D', width: '100%'}}>
+      <TouchableOpacity onPress={() => {navigation.navigate('Create')}}>
+        <Image style={{marginLeft: width*0.01}} source={require("../assets/Frame.png")} alt=""></Image>
+      </TouchableOpacity>
+      <Appbar.Content className="items-center" title='Prompt Results' color='white' />
+    </Appbar.Header>
     <ScrollView style={{ flex: 1 }}>
       <View className="overflow-hidden bg-stone-900 flex flex-col items-center justify-start" style={{paddingLeft: 21, paddingRight: 27, paddingBottom: 34}}>
         <Text className="text-white-0 text-left " style={{fontSize: 12 / fs, marginTop: 30}}>Showing results for "{ttt}"</Text>
-        <View className="overflow-hidden bg-stone-900 flex flex-col items-center justify-start" style={{paddingLeft: 21, paddingRight: 27, paddingTop: 26}}>
-        <Text className="text-white-0 text-left " style={{fontSize: 22 / fs, marginTop: 20, marginBottom: 10}}>Select a quote first</Text>
-          <FlatList
-            data={[q1, q2, q3, q4]}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={({ item }) => (
-              <TouchableOpacity
-              onPress={() => setSelectedQuote(item)}
-              style={[styles.quote, selectedQuote === item && { backgroundColor: '#6983ce' }]}
-            >
-              <Text style={{ color: "white" }}>{item}</Text>
-            </TouchableOpacity>
-          )}
-          />
-        </View>
         <View className="flex flex-row items-start justify-center" style={{marginTop: 8}}>
           <FlatList    
             columnWrapperStyle={{justifyContent: 'space-between'}}
@@ -238,4 +229,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default Genbet;
+export default memo(Genbet);

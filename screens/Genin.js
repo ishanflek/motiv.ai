@@ -38,7 +38,7 @@ function Genin({navigation}) {
         image_dimensions: "512x512"
       },
     });
-
+    
     let config = {
       method: 'post',
       maxBodyLength: Infinity,
@@ -67,18 +67,16 @@ function Genin({navigation}) {
   useEffect(() => {}, [style]);
 
   return (
-    <View
-      className=" flex bg-stone-900 justify-center w-full"
-      style={{paddingTop: height/40}}>
-      <Appbar.Header  style={{backgroundColor: '#1D1D1D'}}>
-        <Appbar.Content classname="text-center" color="white" title="Create"></Appbar.Content>
+    <View className=" flex bg-stone-900 justify-center w-full h-full">
+      <Appbar.Header  style={{marginLeft: width*0.001, backgroundColor: '#1D1D1D'}}>
+        <Appbar.Content style={{marginLeft: width*0.01}}classname="text-center" color="white" title="Create"></Appbar.Content>
       </Appbar.Header>
       <View
         className="overflow-hidden bg-stone-900 flex flex-col items-start justify-between w-full"
-        style={{paddingLeft: width*0.04, paddingRight: 22, paddingBottom: 42}}>
+        style={{paddingLeft: width*0.04, paddingRight: 22, backgroundColor: "#1c1c1c"}}>
         <Text
           className="shrink text-white-0 text-left"
-          style={{fontSize: 12 / fs}}>
+          style={{marginLeft: width*0.02, fontSize: 12 / fs}}>
           Generate original, realistic images and art from a text description
         </Text>
         <TextInput
@@ -107,7 +105,7 @@ function Genin({navigation}) {
               {id: '6', name: ' in pop style', image: require('../assets/pop.png')},
               {id: '7', name: ' in oil style', image: require('../assets/oil.png')},
               {id: '8', name: ' in van gogh style', image: require('../assets/vangogh.png')},
-              {id: '9', name: ' in van gogh style', image: require('../assets/vangogh.png')},
+              {id: '9', name: ' in haunting style', image: require('../assets/haunting.jpg')},
             ]}
             numColumns={3}
             renderItem={({item}) => (
@@ -128,7 +126,7 @@ function Genin({navigation}) {
         </View>
         <Button
           className="w-full"
-          style={{marginLeft: 1, marginTop: 19}}
+          style={{marginLeft: 1, marginTop: 19, backgroundColor: "#E85C96"}}
           onPress={handlefreq}
           mode="contained"
           labelStyle={{padding: 5}}>

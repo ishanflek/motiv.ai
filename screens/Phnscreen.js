@@ -14,6 +14,13 @@ function Phnscreen({ navigation }) {
   // Handle the button press to send the OTP
   async function sendOTP() {
 
+    const phoneRegex = /^\d{10}$/; // Regular expression for matching 10-digit phone numbers
+
+    if (!phoneRegex.test(phn)) {
+      Alert.alert("Invalid phone number"); // If phone number is not 10 digits, log an error message
+      return;
+    }
+
     setPressed(true)
     console.log(phn)
     console.log(confirmation)
@@ -41,7 +48,8 @@ function Phnscreen({ navigation }) {
       }
       });
     } catch (error) {
-      console.log('Invalid code.');
+      Alert.alert('Wrong code.');
+      setPressed(false)
     }
   }
 
@@ -61,13 +69,13 @@ function Phnscreen({ navigation }) {
     <View className="overflow-hidden bg-stone-900 h-full flex flex-col justify-between w-full" style={{ paddingLeft: width*0.07, paddingRight: width*0.08, paddingTop: height/9, paddingBottom: height/1.8}}>
       {!pressed ?
         <>
-          <Text className="shrink text-neutral-300 text-left" style={{ paddingTop: height/96, fontSize: 36 / fs }}>Great to see you today!</Text>
+          <Text className="text-neutral-300 text-left" style={{ paddingTop: height/96, fontSize: 36 / fs }}>Great to see you today!</Text>
           <TextInput className="w-full" style={{ marginTop: height/21 }} value={phn} onChangeText={(value) => { setPhn(value) }} label="Phone Number" mode="flat"></TextInput>
           <Button className="w-full" style={{ marginTop: height/21 }} onPress={sendOTP} mode="contained" labelStyle={{ "padding": 5 }}>Next</Button>
         </>
         :
         <>
-          <Text className="shrink text-neutral-300 text-left" style={{ paddingTop: height/96, fontSize: 36 / fs }}>Code{'\n'}Confirmation</Text>
+          <Text className="text-neutral-300 text-left" style={{ paddingTop: height/96, fontSize: 36 / fs }}>Code{'\n'}Confirmation</Text>
           <TextInput onChangeText={(value) => { setCode(value) }} className="w-full" style={{ marginTop: height/21 }} label="Enter OTP" mode="flat"></TextInput>
           <Button className="w-full" style={{ marginTop: height/21 }} onPress={confirmCode} mode="contained" labelStyle={{ "padding": 5 }}>Next</Button>
         </>

@@ -7,6 +7,7 @@ import {
   Text,
   StyleSheet,
   PanResponder,
+  FlatList,
   TextInput,
   TouchableOpacity,
   PermissionsAndroid,
@@ -23,10 +24,11 @@ import ViewShot, {captureRef} from 'react-native-view-shot';
 import storage from '@react-native-firebase/storage';
 import { PinchGestureHandler, State } from 'react-native-gesture-handler';
 import auth from '@react-native-firebase/auth';
+const { height,width } = Dimensions.get('window');
 
 function Editor({route, navigation}) {
-  const [text, setText] = useState(route.params.quote);
-  const [editing, setEditing] = useState(false);
+  const [text, setText] = useState("A very beautiful quote begins with ????");
+  const [editing, setEditing] = useState(true);
   const fs = Dimensions.get("window").fontScale;
   const pan = useRef(new Animated.ValueXY({ x: Dimensions.get("window").width/2, y: Dimensions.get("window").height/2 })).current;
   const [sliderValue, setSliderValue] = useState(16);
@@ -35,8 +37,18 @@ function Editor({route, navigation}) {
   const [loading, setLoading] = useState(false);
   const [imguploaded, setImageUploaded] = useState(false);
   const [downloadUrl, setDownloadURL] = useState("")
-  const colors = ['#FF5733', '#FFC300', '#DAF7A6', '#C70039', '#900C3F', '#581845', '#4CAF50', '#2196F3', '#9C27B0', '#F44336'];
-  const [txtcolor, setTxtColor] = useState(colors[0]);
+  const colors = [
+    { id: '#EB5DDD', value: '#EB5DDD' },
+    { id: '#5D63EB', value: '#5D63EB' },
+    { id: '#5DD1EB', value: '#5DD1EB' },
+    { id: '#5DEBB8', value: '#5DEBB8' },
+    { id: '#C6EB5D', value: '#C6EB5D' },
+    { id: '#EBA15D', value: '#EBA15D' },
+    { id: '#EB5D5D', value: '#EB5D5D' },
+    { id: '#000000', value: '#000000' },
+    { id: '#FFFFFF', value: '#FFFFFF' },
+  ];
+  const [txtcolor, setTxtColor] = useState("#000000");
 
 
   const onPinchGestureEvent = Animated.event(
@@ -54,11 +66,10 @@ function Editor({route, navigation}) {
     }
   };
  
-  const handlePress = useCallback(() => {
-    const currentIndex = colors.indexOf(txtcolor);
-    const nextIndex = (currentIndex + 1) % colors.length;
-    setTxtColor(colors[nextIndex]);
-  }, [txtcolor]);
+  const handlePress = (color) => {
+    setTxtColor(color);
+    // call your function here
+  };
 
   const getPermissionAndroid = async () => {
     try {
@@ -87,19 +98,57 @@ function Editor({route, navigation}) {
   };
 
   const shareImage = async () => {
-    console.log(imguploaded)
     try {
-      if (imguploaded === false) {
-        Alert.alert('Please upload an image first.');
-        return;
+ // set loading to true
+  
+      if (!imguploaded) {
+        setLoading(true);
+        const uri = await captureRef(viewRef, {
+          format: 'png',
+          quality: 0.8,
+        });
+  
+        if (Platform.OS === 'android') {
+          const granted = await getPermissionAndroid();
+          if (!granted) {
+            setLoading(false); // set loading to false
+            return;
+          }
+        }
+  
+        console.log(uri);
+        const currentUser = auth().currentUser;
+        const uid = currentUser.uid;
+        const imgName = Math.floor(Date.now() / 1000) + ".png";
+        const reference = storage().ref().child(uid).child(imgName);
+        const task = reference.putFile(uri);
+        console.log(loading)
+        task.then(() => {
+          console.log('Image uploaded to the bucket!');
+          setLoading(false);
+          reference.getDownloadURL().then((url) => {
+            console.log('Download URL:', url);
+            setDownloadURL(url);
+            setImageUploaded(true);
+          }).catch((e) => console.log('Error getting download URL => ', e));
+        }).catch((e) => console.log('uploading image error => ', e));
+  
+      } else {
+        await Share.share({
+          message: downloadUrl,
+        });
       }
-      await Share.share({
-        message: downloadUrl,
-      });
     } catch (error) {
       Alert.alert(error.message);
     }
-};
+  };
+
+  const renderItem = ({ item }) => (
+    <TouchableOpacity
+      style={[styles.button, { backgroundColor: item.value }]}
+      onPress={() => handlePress(item.id)}
+    />
+  );
 
 const downloadImage = async () => {
   try {
@@ -157,13 +206,15 @@ const downloadImage = async () => {
   };
 
   const handleEdit = () => {
+    console.log("hello")
     setEditing(true);
+    console.log("editing:", editing);
   };
 
   return (
     <View style={styles.container}>
     <ViewShot
-      style={{height: "80%"}}
+      style={{height: "85%"}}
       ref={viewRef}
       options={{
         fileName: 'Your-File-Name',
@@ -177,7 +228,7 @@ const downloadImage = async () => {
               onGestureEvent={onPinchGestureEvent}
               onHandlerStateChange={onPinchHandlerStateChange}>
               <Animated.Text
-                onPress={handlePress}
+                onPress={handleEdit}
                 style={[
                   styles.draggableText,
                   { fontSize: sliderValue * scale },
@@ -200,20 +251,22 @@ const downloadImage = async () => {
           <Text style={styles.overlayText}>Uploading Image...</Text>
         </View>
       )}
-    <View style={{height: '20%', backgroundColor: '#000000', padding: 0, margin: 0}}>
-        <View className="flex flex-row justify-around items-center">
-          <TouchableOpacity className="bg-[#141519] rounded-lg w-24 flex flex-col items-center p-2">
-            <Image source={require('../assets/edit.png')} />
-            <Text style={{color: 'white'}}>Edit</Text>
-          </TouchableOpacity>
-          <TouchableOpacity className="bg-[#141519] rounded-lg w-24 flex flex-col items-center p-2" onPress={downloadImage}>
-            <Image source={require('../assets/save.png')} />
-            <Text style={{color: 'white'}}>Save</Text>
-          </TouchableOpacity>
-          <TouchableOpacity className="bg-[#141519] rounded-lg w-24 flex flex-col items-center p-2" onPress={shareImage}>
-            <Image source={require('../assets/share.png')} />
-            <Text style={{color: 'white'}}>Share</Text>
-          </TouchableOpacity>
+    <View style={{height: '15%', backgroundColor: '#1D1D1D', padding:0}}>
+        <FlatList
+            style={{paddingTop: height/62, marginLeft: width*0.065, marginBottom: height/52}}
+            data={colors}
+            keyExtractor={(item) => item.id}
+            renderItem={renderItem}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+          />
+        <View className="justify-around items-center">
+          <TouchableOpacity 
+          style={{width: "90%", height: height/20, backgroundColor: '#AAAAAA24', borderRadius: 8, marginBottom: height/30}} 
+          onPress={shareImage}
+        >
+          <Text style={{color: 'white',marginBottom: 14, paddingTop: "3%", paddingLeft: "43%"}}>Share</Text>
+        </TouchableOpacity>
         </View>
     </View>
   </View>  
@@ -224,15 +277,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  doneButton: {
-    backgroundColor: 'darkgrey',
-    borderRadius: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginLeft: 10,
-    marginTop: 30,
-    width: "20%",
-    height: "60%"
+  overly: {
+
   },
   overlay: {
     position: 'absolute',
@@ -298,10 +344,13 @@ const styles = StyleSheet.create({
     marginTop: 0,
   },
   button: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
+    width: 25,
+    height: 25,
+    borderRadius: 25,
+    marginHorizontal: 6,
   },
 });
 
 export default Editor;
+
+

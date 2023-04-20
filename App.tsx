@@ -126,7 +126,8 @@ function App(): JSX.Element {
   // Set an initializing state whilst Firebase connects
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState();
-  const theme = {colors: {
+  const theme = {
+    colors: {
     primary: '#121416',
     onPrimary: '#ffffff',
     primaryContainer: '#d8d8d8',
@@ -293,3 +294,26 @@ const styles = StyleSheet.create({
 });
 
 export default App;
+
+
+
+{/*
+    fonts: {
+      regular: {
+        fontFamily: 'Comfortaa-Regular',
+        fontWeight: 'normal',
+      },
+      medium: {
+        fontFamily: 'Comfortaa-Medium',
+        fontWeight: 'normal',
+      },
+      light: {
+        fontFamily: 'Comfortaa-Light',
+        fontWeight: 'normal',
+      },
+      thin: {
+        fontFamily: 'Comfortaa-Thin',
+        fontWeight: 'normal',
+      },
+    }, 
+*/}
